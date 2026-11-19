@@ -36,6 +36,7 @@ class Resp:
     body: bytes
     chain: list = field(default_factory=list)  # [(url, status)] for every hop, final included
     verified: bool = True
+    hop_cookies: list = field(default_factory=list)  # Set-Cookie lines from every hop, redirects included
 
     def h(self, name, default=None):
         v = self.headers.get(name.lower())
@@ -112,7 +113,7 @@ class Net:
 
     # -------------------------------------------------------------- HTTP
     def get(self, url, headers=None, follow=5, max_bytes=2_000_000, verify=True, method="GET"):
-        chain = []
+        chain, cookies = [], []
         for _ in range(follow + 1):
             u = urllib3.util.parse_url(url)
             if u.scheme not in ("http", "https") or not u.host:
@@ -139,12 +140,13 @@ class Net:
             for k, v in r.raw.headers.items():
                 hdrs.setdefault(k.lower(), []).append(v)
             chain.append((url, r.status_code))
+            cookies += hdrs.get("set-cookie", [])
             loc = r.headers.get("location")
             if r.status_code in (301, 302, 303, 307, 308) and loc and len(chain) <= follow:
                 url = requests.compat.urljoin(url, loc)
                 continue
-            return Resp(url, r.status_code, hdrs, body[:max_bytes], chain, verify)
-        return Resp(url, r.status_code, hdrs, body[:max_bytes], chain, verify)
+            return Resp(url, r.status_code, hdrs, body[:max_bytes], chain, verify, cookies)
+        return Resp(url, r.status_code, hdrs, body[:max_bytes], chain, verify, cookies)
 
     # --------------------------------------------------------------- TLS
     def tls(self, host, port=443):
@@ -166,6 +168,8 @@ class Net:
             der = self._peek_cert(host, port)
         except (ssl.SSLError, ConnectionResetError) as e:
             out["detail"] = f"TLS handshake failed: {_short(e)}"
+            out["old_tls"] = self._old_tls(host, port)  # a server that only speaks TLS 1.0/1.1 fails here
+            out["old_only"] = out["old_tls"] is True
             return out
         except OSError as e:
             out["detail"] = _short(e)

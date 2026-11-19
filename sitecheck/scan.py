@@ -293,7 +293,10 @@ def scan(target, net: Net, verified=False, wp_status=None):
     facts["tls"] = tls
     https_ok = tls["ok"]
     https_up = tls["reachable"] and (tls["ok"] or tls["problem"] is not None)
-    if not https_up:
+    if not https_up and tls.get("old_only"):
+        P("old_tls", f"The server only completes TLS 1.0/1.1 handshakes on port {t.https_port}; current browsers refuse "
+                     "these, so the HTTPS site does not open for most visitors", "High")
+    elif not https_up:
         P("https_missing", f"No HTTPS answer on port {t.https_port}: {tls['detail'] or 'no connection'}")
     elif tls["problem"] == "expired":
         P("cert_expired", f"Certificate expired on {tls['not_after']}")
@@ -321,11 +324,17 @@ def scan(target, net: Net, verified=False, wp_status=None):
         hr = net.get(t.url("http"), follow=5, max_bytes=200_000)
         facts["http_chain"] = hr.chain
         final_https = hr.url.startswith("https://")
+        first_https = next((u for u, _ in hr.chain if u.startswith("https://")), None)
         if final_https:
             R.append(ok("redirect", "HTTPS", " → ".join(f"{u} ({s})" for u, s in hr.chain)))
+            if first_https and first_https.split("/")[2].split(":")[0] != host:
+                Q("redirect_offhost", " → ".join(f"{u} ({s})" for u, s in hr.chain))
+        elif https_up and preloaded(net, host):
+            R.append(ok("redirect", "HTTPS", f"{host} is on the browsers' HSTS preload list, so browsers never use http://"))
         elif https_up:
             P("http_no_redirect", f"{t.url('http')} answered {hr.status} and stayed on http://")
         facts["http_page"] = hr
+        facts["http_cookies"] = [c for c in hr.hop_cookies if hr.url.startswith("https://")]
     except (Unreachable, ssl.SSLError):
         facts["http_chain"] = None
         if https_up:
@@ -359,7 +368,7 @@ def scan(target, net: Net, verified=False, wp_status=None):
     else:
         doc = parse_page(page.text) if "html" in (page.h("content-type") or "text/html").lower() else parse_page("")
         facts["doc"] = doc
-        _headers(page, doc, on_https, R, P)
+        _headers(page, doc, on_https, R, P, net)
         _cors(net, t, page, R, P, facts)
         _cookies(page, facts, on_https, R, P)
         _content(page, doc, on_https, R, P, wp_status, facts)
@@ -387,11 +396,29 @@ def scan(target, net: Net, verified=False, wp_status=None):
                 scanned_at=dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC"))
 
 
-def _headers(page, doc, on_https, R, P):
+_PRELOAD = {}
+
+
+def preloaded(net, host):
+    """Is the name on Chrome's HSTS preload list (used by all major browsers)? Asked from hstspreload.org; False if unknown."""
+    if net is None or net.allow_private:
+        return False
+    if host not in _PRELOAD:
+        try:
+            r = net.get(f"https://hstspreload.org/api/v2/status?domain={host}", follow=1, max_bytes=20_000)
+            _PRELOAD[host] = json.loads(r.body).get("status") == "preloaded"
+        except Exception:
+            return False
+    return _PRELOAD[host]
+
+
+def _headers(page, doc, on_https, R, P, net):
     # HSTS
     if on_https:
         hsts = page.h("strict-transport-security")
-        if not hsts:
+        if not hsts and preloaded(net, page.url.split("/")[2].split(":")[0]):
+            R.append(ok("hsts", "Headers", "On the browsers' HSTS preload list (no header needed for browsers that ship it)"))
+        elif not hsts:
             P("hsts_missing", "No Strict-Transport-Security header on the HTTPS page")
         else:
             m = re.search(r"max-age\s*=\s*\"?(\d+)", hsts, re.I)
@@ -476,7 +503,7 @@ def _cors(net, t, page, R, P, facts):
 
 
 def _cookies(page, facts, on_https, R, P):
-    lines = page.all("set-cookie")
+    lines = list(dict.fromkeys(page.hop_cookies + facts.get("http_cookies", []))) or page.all("set-cookie")
     hp = facts.get("http_page")
     cookies = [parse_cookie(c) for c in lines]
     facts["cookies"] = cookies

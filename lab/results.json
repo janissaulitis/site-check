@@ -1,9 +1,9 @@
 {
- "sites": 39,
+ "sites": 40,
  "clean_sites": 10,
- "planted": 63,
- "caught": 63,
- "high_planted": 15,
+ "planted": 64,
+ "caught": 64,
+ "high_planted": 16,
  "high_missed": [],
  "false_alarms": [],
  "mozilla_compared": 312,
@@ -49,7 +49,7 @@
  },
  "review_expected": 9,
  "review_found": 9,
- "review_total": 18,
+ "review_total": 19,
  "checks": {
   "1 no High misses": true,
   "2 >=95% planted found": true,
@@ -2046,6 +2046,48 @@
       "agree": null
      }
     ]
+   }
+  },
+  {
+   "slug": "old-tls-only",
+   "about": "Speaks only TLS 1.0/1.1, so current browsers can't open it (found on badssl.com in real-world testing)",
+   "verified": false,
+   "review": [
+    "manual_page"
+   ],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "old_tls",
+     "High"
+    ]
+   ],
+   "caught": [
+    [
+     "old_tls",
+     "High"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [
+    "hsts",
+    "csp",
+    "nosniff",
+    "frames",
+    "referrer",
+    "version",
+    "cors",
+    "cookies",
+    "mixed",
+    "forms",
+    "libs"
+   ],
+   "incomplete": [],
+   "mozilla": {
+    "error": "The site seems to be down."
    }
   },
   {
@@ -5207,5 +5249,5 @@
    }
   }
  ],
- "run_at": "2026-11-19 17:53 UTC"
+ "run_at": "2026-11-19 18:00 UTC"
 }

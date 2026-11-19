@@ -123,13 +123,15 @@ class Server(http.server.ThreadingHTTPServer):
 
 def tls_ctx(site):
     kind = site["https"]
-    certfile, keyfile = certs.site_cert(site["slug"], site["host"], "good" if kind == "oldtls" else kind)
+    certfile, keyfile = certs.site_cert(site["slug"], site["host"], "good" if kind in ("oldtls", "oldonly") else kind)
     ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
     ctx.load_cert_chain(certfile, keyfile)
-    if kind == "oldtls":
+    if kind in ("oldtls", "oldonly"):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             ctx.minimum_version = ssl.TLSVersion.TLSv1
+            if kind == "oldonly":
+                ctx.maximum_version = ssl.TLSVersion.TLSv1_1
         ctx.set_ciphers("DEFAULT:@SECLEVEL=0")
     else:
         ctx.minimum_version = ssl.TLSVersion.TLSv1_2

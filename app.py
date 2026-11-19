@@ -325,6 +325,8 @@ with tab_proof:
             "The server copies any website's address back and allows logins with it. Mozilla's scanner (v1.7.2) saw the "
             "header but rated it 'restricted access' and passed it; its check compares against the Origin it sent, which it "
             "does not appear to find. Site Check flags it. This is the case for having two layers.",
+        "redirection-off-host-from-http": "http:// jumps straight to another name (e.g. www.). Mozilla fails it; Site Check "
+                                          "lists it under 'Worth a closer look'.",
     }
     kit.table([dict(site=d["site"], test=d["name"], us="OK" if d["ours"] else "Problem", mz="OK" if d["mozilla"] else "Problem",
                     why=WHY.get(d["mozilla_result"], d["mozilla_result"]).replace("`", "")) for d in res["disagreements"]],

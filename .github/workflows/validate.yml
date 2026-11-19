@@ -2,7 +2,7 @@ name: Validate the scanner
 
 on:
   push:
-    paths: ["sitecheck/**", "lab/**", ".github/workflows/validate.yml"]
+    paths: ["sitecheck/**", "lab/*.py", ".github/workflows/validate.yml"]
   schedule:
     - cron: "41 5 * * 1"   # Mondays: real-world sites change, so re-check against badssl.com and Mozilla
   workflow_dispatch:

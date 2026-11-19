@@ -246,6 +246,9 @@
      200
     ]
    ],
+   "http_cookies": [
+    "PHPSESSID=8f2c1; path=/"
+   ],
    "cors": {
     "GET": {
      "acao": null,
@@ -313,7 +316,7 @@
     }
    }
   },
-  "scanned_at": "2026-11-19 17:52 UTC"
+  "scanned_at": "2026-11-19 17:59 UTC"
  },
  "mozilla": {
   "grade": "F",

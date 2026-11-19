@@ -92,6 +92,8 @@ SITES = [
     site("expiring", "Certificate expires in 9 days", [("cert_expiring", "Medium")], https="expiring"),
     site("no-redirect", "http:// shows the site instead of redirecting", [("http_no_redirect", "Medium")], http="serve"),
     site("old-tls", "Accepts TLS 1.0", [("old_tls", "Medium")], https="oldtls"),
+    site("old-tls-only", "Speaks only TLS 1.0/1.1, so current browsers can't open it (found on badssl.com in real-world testing)",
+         [("old_tls", "High")], https="oldonly"),
 
     # ----------------------------------------------------------- headers
     site("no-headers", "No security headers, server and PHP versions shown",

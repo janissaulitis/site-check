@@ -340,6 +340,12 @@ C.update({
         why="Nothing about headers, cookies or scripts can be said without the page.",
         fix="Check the site loads normally, then scan again.",
         retest="Open https://{host} in a browser, then scan again."),
+    "redirect_offhost": dict(
+        area="HTTPS", sev=R, title="http:// jumps straight to another name",
+        why="The first HTTPS stop is on a different name (often www.), so this name never gets its own HSTS rule and its "
+            "first visit stays open to hijacking on public Wi-Fi. Mozilla counts this as a failed redirect.",
+        fix="Redirect http://{host} to https://{host} first (with HSTS), then to the other name.",
+        retest="`curl -sI http://{host}` shows `Location: https://{host}/` (same name). Then scan again."),
     "layers_disagree": dict(
         area="Headers", sev=R, title="The two scanners disagree",
         why="When two independent scanners give different answers, one of them is wrong. A person should look.",

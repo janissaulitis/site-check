@@ -63,12 +63,13 @@ def layer1_view(report):
     res = report["results"]
     probs = {r["id"] for r in res if r["status"] == "problem"}
     oks = {r["id"] for r in res if r["status"] == "ok"}
+    looks = {r["id"] for r in res if r["status"] == "review"}
     cert_bad = bool(probs & {"cert_expired", "cert_name", "cert_untrusted", "https_missing"})
     ref = [r for r in res if r["id"] == "referrer_missing"]
     referrer_set_but_unsafe = bool(ref) and not ref[0]["evidence"].startswith("No Referrer-Policy")
     view = {
         "strict-transport-security": "hsts" in oks and not cert_bad,
-        "redirection": not cert_bad and "http_no_redirect" not in probs,
+        "redirection": not cert_bad and "http_no_redirect" not in probs and "redirect_offhost" not in looks,
         "content-security-policy": "csp" in oks,
         "x-content-type-options": "nosniff" in oks,
         "x-frame-options": "frames" in oks,
@@ -97,8 +98,12 @@ def compare(report, obs):
         if test == "referrer-policy" and any(r["id"] == "referrer_missing" and r["status"] == "problem"
                                              and r["evidence"].startswith("No Referrer-Policy") for r in report["results"]):
             note = "Not set"  # both treat a missing policy as safe enough; Site Check still suggests one (Low)
-        rows.append(dict(test=test, name=name, ours=o, ours_note=note, mozilla=bool(t.get("pass")), mozilla_result=t.get("result", ""),
-                         agree=None if (test in ONLY_MOZILLA or o is None) else (o == bool(t.get("pass")))))
+        # The public API can mark results with no penalty ("not implemented", "no cookies") as not passed; Mozilla's
+        # own grade doesn't count them against the site, so neither do we.
+        mod = t.get("scoreModifier", t.get("score_modifier"))
+        moz_ok = bool(t.get("pass")) or (mod is not None and mod >= 0)
+        rows.append(dict(test=test, name=name, ours=o, ours_note=note, mozilla=moz_ok, mozilla_result=t.get("result", ""),
+                         agree=None if (test in ONLY_MOZILLA or o is None) else (o == moz_ok)))
     return rows
 
 
