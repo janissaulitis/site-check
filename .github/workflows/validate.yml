@@ -28,8 +28,10 @@ jobs:
           npm install --global @mdn/mdn-http-observatory
           D="$(npm root -g)/@mdn/mdn-http-observatory"
           # its install step downloads the HSTS preload list; if that download failed, fetch it again, else run without it
-          [ -f "$D/conf/hsts-preload.json" ] || (cd "$D" && npm run updateHsts) || echo '{}' > "$D/conf/hsts-preload.json"
-          ls -la "$D/conf/hsts-preload.json"
+          cd "$D"; mkdir -p conf
+          [ -f conf/hsts-preload.json ] || npm run updateHsts || true
+          [ -f conf/hsts-preload.json ] || echo '{}' > conf/hsts-preload.json
+          ls -la conf
       - name: Unit tests
         run: python -m pytest -q tests
       - name: Test lab (needs root for ports 80/443 and /etc/hosts)
