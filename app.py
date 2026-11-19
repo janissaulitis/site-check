@@ -339,6 +339,25 @@ with tab_proof:
               [kit.col("Site", "site", "strong"), kit.col("What was planted", "about", "wrap"), kit.col("Planted", "planted", "num"),
                kit.col("Found", "found", "num"), kit.col("Missed", "missed", "wrap"), kit.col("False alarms", "extra", "wrap"),
                kit.col("Mozilla grade", "mz")], max_height=560)
+    rw_file = HERE / "lab" / "realworld.json"
+    if rw_file.exists():
+        rw = json.loads(rw_file.read_text())
+        st.markdown("#### Real websites")
+        st.markdown(f"**badssl.com** (public test sites with known broken HTTPS, built by others for testing): "
+                    f"**{rw['badssl_ok']} of {rw['badssl_n']}** gave the expected result. "
+                    f"**{rw['sites']} public websites** were checked by both scanners: they agree on "
+                    f"**{rw['agree']} of {rw['compared']}** shared tests. Sites are not named; checked {rw['run_at']}.")
+        kit.table([dict(h=r["host"], must=", ".join(r["must"]) or "nothing wrong", got=", ".join(r.get("got", [])) or r.get("error", "—"),
+                        ok="PASS" if r["ok"] else "FAIL", note=r.get("note", "")) for r in rw["badssl"]],
+                  [kit.col("badssl.com test site", "h", "strong"), kit.col("Must find", "must", "wrap"),
+                   kit.col("Site Check found", "got", "wrap"), kit.col("", "ok", "chip", {"PASS": "good", "FAIL": "bad"}),
+                   kit.col("Note", "note", "wrap")])
+        diffs = {}
+        for r in rw["public"]:
+            for d in r["differ"]:
+                diffs[(d["test"], d["result"])] = diffs.get((d["test"], d["result"]), 0) + 1
+        if diffs:
+            st.caption("Disagreements on public sites: " + "; ".join(f"{t} ({res}) ×{n}" for (t, res), n in sorted(diffs.items())))
     st.markdown("#### Safety checks")
     kit.table([dict(c=k.split(" ", 1)[1] if k[0].isdigit() else k, r="PASS" if v else "FAIL") for k, v in res["checks"].items()]
               + [dict(c=f"Refuses {k}", r="PASS" if v == "refused" else "FAIL") for k, v in res["ssrf"].items()],
