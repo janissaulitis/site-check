@@ -1,0 +1,5211 @@
+{
+ "sites": 39,
+ "clean_sites": 10,
+ "planted": 63,
+ "caught": 63,
+ "high_planted": 15,
+ "high_missed": [],
+ "false_alarms": [],
+ "mozilla_compared": 312,
+ "mozilla_agree": 309,
+ "disagreements": [
+  {
+   "site": "weak-headers",
+   "test": "x-frame-options",
+   "name": "Clickjacking protection",
+   "ours": false,
+   "ours_note": null,
+   "mozilla": true,
+   "mozilla_result": "x-frame-options-allow-from-origin",
+   "agree": false
+  },
+  {
+   "site": "cors-reflect",
+   "test": "cross-origin-resource-sharing",
+   "name": "CORS",
+   "ours": false,
+   "ours_note": null,
+   "mozilla": true,
+   "mozilla_result": "cross-origin-resource-sharing-implemented-with-restricted-access",
+   "agree": false
+  },
+  {
+   "site": "cors-preflight",
+   "test": "cross-origin-resource-sharing",
+   "name": "CORS",
+   "ours": false,
+   "ours_note": null,
+   "mozilla": true,
+   "mozilla_result": "cross-origin-resource-sharing-implemented-with-restricted-access",
+   "agree": false
+  }
+ ],
+ "ssrf": {
+  "loopback": "refused",
+  "private": "refused",
+  "metadata": "refused",
+  "lab name": "refused",
+  "redirect to metadata": "refused"
+ },
+ "review_expected": 9,
+ "review_found": 9,
+ "review_total": 18,
+ "checks": {
+  "1 no High misses": true,
+  "2 >=95% planted found": true,
+  "3 clean sites: 0 Medium/High false alarms": true,
+  "4 soft-404 sites: no exposed-file finding": true,
+  "5 no probes without verification": true,
+  "6 private addresses refused": true,
+  "7 >=90% agreement with Mozilla": true,
+  "8 every problem has evidence, why, fix, retest": true,
+  "unknown is reported, not OK (dns-fail)": true,
+  "borderline cases flagged for a closer look": true
+ },
+ "rows": [
+  {
+   "slug": "clean-static",
+   "about": "Everything set up well, no cookies, no forms",
+   "verified": true,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [],
+   "caught": [],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [
+    "/.DS_Store",
+    "/.env",
+    "/.git/HEAD",
+    "/.git/config",
+    "/backup.sql",
+    "/backup.tar.gz",
+    "/backup.zip",
+    "/backup/",
+    "/database.sql",
+    "/db.sql",
+    "/dump.sql",
+    "/files/",
+    "/info.php",
+    "/phpinfo.php",
+    "/server-status",
+    "/site.zip",
+    "/uploads/",
+    "/wp-config.bak",
+    "/wp-config.old",
+    "/wp-config.php.bak",
+    "/wp-config.php.save",
+    "/wp-config.php~",
+    "/www.zip"
+   ],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "clean-shop",
+   "about": "Well set up shop: safe session cookie, CSRF cookie readable by scripts (as frameworks need), current jQuery, HTTPS login form, nonce-based CSP, frame-ancestors instead of X-Frame-Options",
+   "verified": true,
+   "review": [
+    "login_form"
+   ],
+   "review_expected": [
+    "login_form"
+   ],
+   "review_missed": [],
+   "expected": [],
+   "caught": [],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [
+    "/.DS_Store",
+    "/.env",
+    "/.git/HEAD",
+    "/.git/config",
+    "/backup.sql",
+    "/backup.tar.gz",
+    "/backup.zip",
+    "/backup/",
+    "/database.sql",
+    "/db.sql",
+    "/dump.sql",
+    "/files/",
+    "/info.php",
+    "/phpinfo.php",
+    "/server-status",
+    "/site.zip",
+    "/uploads/",
+    "/wp-config.bak",
+    "/wp-config.old",
+    "/wp-config.php.bak",
+    "/wp-config.php.save",
+    "/wp-config.php~",
+    "/www.zip"
+   ],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-secure-with-httponly-sessions-and-samesite",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-all-scripts-loaded-from-secure-origin",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "soft-404",
+   "about": "Answers 200 with the home page for every address, including /.env and /.git/HEAD",
+   "verified": true,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [],
+   "caught": [],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [
+    "/.DS_Store",
+    "/.env",
+    "/.git/HEAD",
+    "/.git/config",
+    "/backup.sql",
+    "/backup.tar.gz",
+    "/backup.zip",
+    "/backup/",
+    "/database.sql",
+    "/db.sql",
+    "/dump.sql",
+    "/files/",
+    "/info.php",
+    "/phpinfo.php",
+    "/server-status",
+    "/site.zip",
+    "/uploads/",
+    "/wp-config.bak",
+    "/wp-config.old",
+    "/wp-config.php.bak",
+    "/wp-config.php.save",
+    "/wp-config.php~",
+    "/www.zip"
+   ],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "blog-sql",
+   "about": "Blog whose missing pages are HTML that talks about SQL and .env files",
+   "verified": true,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [],
+   "caught": [],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [
+    "/.DS_Store",
+    "/.env",
+    "/.git/HEAD",
+    "/.git/config",
+    "/backup.sql",
+    "/backup.tar.gz",
+    "/backup.zip",
+    "/backup/",
+    "/database.sql",
+    "/db.sql",
+    "/dump.sql",
+    "/files/",
+    "/info.php",
+    "/phpinfo.php",
+    "/server-status",
+    "/site.zip",
+    "/uploads/",
+    "/wp-config.bak",
+    "/wp-config.old",
+    "/wp-config.php.bak",
+    "/wp-config.php.save",
+    "/wp-config.php~",
+    "/www.zip"
+   ],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "clean-wp",
+   "about": "Current WordPress, version not advertised, user list closed",
+   "verified": true,
+   "review": [
+    "dmarc_partial",
+    "spf_softfail",
+    "wp_check_plugins"
+   ],
+   "review_expected": [
+    "dmarc_partial",
+    "spf_softfail",
+    "wp_check_plugins"
+   ],
+   "review_missed": [],
+   "expected": [],
+   "caught": [],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [
+    "/.DS_Store",
+    "/.env",
+    "/.git/HEAD",
+    "/.git/config",
+    "/backup.sql",
+    "/backup.tar.gz",
+    "/backup.zip",
+    "/backup/",
+    "/database.sql",
+    "/db.sql",
+    "/dump.sql",
+    "/files/",
+    "/info.php",
+    "/phpinfo.php",
+    "/server-status",
+    "/site.zip",
+    "/uploads/",
+    "/wp-config.bak",
+    "/wp-config.old",
+    "/wp-config.php.bak",
+    "/wp-config.php.save",
+    "/wp-config.php~",
+    "/wp-content/uploads/",
+    "/wp-json/wp/v2/users",
+    "/www.zip"
+   ],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-all-scripts-loaded-from-secure-origin",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "borderline",
+   "about": "Nothing wrong, but borderline: HSTS without subdomains, SPF ~all, DMARC at 50%, renewal due in 25 days",
+   "verified": false,
+   "review": [
+    "cert_renew_soon",
+    "dmarc_partial",
+    "hsts_no_subdomains",
+    "spf_softfail"
+   ],
+   "review_expected": [
+    "cert_renew_soon",
+    "dmarc_partial",
+    "hsts_no_subdomains",
+    "spf_softfail"
+   ],
+   "review_missed": [],
+   "expected": [],
+   "caught": [],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "cors-public",
+   "about": "Public API that allows any site without cookies (Access-Control-Allow-Origin: *)",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [],
+   "caught": [],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-implemented-with-public-access",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "theme-version",
+   "about": "Theme loads its own bootstrap.min.js?ver=1.0.2 (the theme's version, not Bootstrap's)",
+   "verified": false,
+   "review": [
+    "no_sri",
+    "wp_check_plugins"
+   ],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [],
+   "caught": [],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "sri-not-implemented-but-external-scripts-loaded-securely",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "unverified-leak",
+   "about": "Leaks .env, but the owner has not verified, so it must not be probed",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [],
+   "caught": [],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "no-https",
+   "about": "Only plain http://, with a login form",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "form_http_password",
+     "High"
+    ],
+    [
+     "https_missing",
+     "High"
+    ]
+   ],
+   "caught": [
+    [
+     "form_http_password",
+     "High"
+    ],
+    [
+     "https_missing",
+     "High"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "C+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "hsts-not-implemented-no-https",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "redirection-missing",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "expired",
+   "about": "Certificate expired 5 days ago",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "cert_expired",
+     "High"
+    ]
+   ],
+   "caught": [
+    [
+     "cert_expired",
+     "High"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "C+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "hsts-invalid-cert",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "redirection-invalid-cert",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "wrong-name",
+   "about": "Certificate issued for another company's name",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "cert_name",
+     "High"
+    ]
+   ],
+   "caught": [
+    [
+     "cert_name",
+     "High"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "C+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "hsts-invalid-cert",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "redirection-invalid-cert",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "self-signed",
+   "about": "Self-signed certificate",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "cert_untrusted",
+     "High"
+    ]
+   ],
+   "caught": [
+    [
+     "cert_untrusted",
+     "High"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "C+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "hsts-invalid-cert",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "redirection-invalid-cert",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "expiring",
+   "about": "Certificate expires in 9 days",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "cert_expiring",
+     "Medium"
+    ]
+   ],
+   "caught": [
+    [
+     "cert_expiring",
+     "Medium"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "no-redirect",
+   "about": "http:// shows the site instead of redirecting",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "http_no_redirect",
+     "Medium"
+    ]
+   ],
+   "caught": [
+    [
+     "http_no_redirect",
+     "Medium"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "B+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "redirection-missing",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "old-tls",
+   "about": "Accepts TLS 1.0",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "old_tls",
+     "Medium"
+    ]
+   ],
+   "caught": [
+    [
+     "old_tls",
+     "Medium"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "no-headers",
+   "about": "No security headers, server and PHP versions shown",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "clickjacking",
+     "Medium"
+    ],
+    [
+     "csp_missing",
+     "Medium"
+    ],
+    [
+     "hsts_missing",
+     "Medium"
+    ],
+    [
+     "nosniff_missing",
+     "Low"
+    ],
+    [
+     "referrer_missing",
+     "Low"
+    ],
+    [
+     "version_leak",
+     "Low"
+    ]
+   ],
+   "caught": [
+    [
+     "clickjacking",
+     "Medium"
+    ],
+    [
+     "csp_missing",
+     "Medium"
+    ],
+    [
+     "hsts_missing",
+     "Medium"
+    ],
+    [
+     "nosniff_missing",
+     "Low"
+    ],
+    [
+     "referrer_missing",
+     "Low"
+    ],
+    [
+     "version_leak",
+     "Low"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "D",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "hsts-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "csp-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "x-content-type-options-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "x-frame-options-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": "Not set",
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "weak-headers",
+   "about": "Headers present but weak: short HSTS, unsafe-inline CSP, ALLOW-FROM, unsafe-url referrer",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "clickjacking",
+     "Medium"
+    ],
+    [
+     "csp_weak",
+     "Low"
+    ],
+    [
+     "hsts_short",
+     "Low"
+    ],
+    [
+     "referrer_missing",
+     "Low"
+    ]
+   ],
+   "caught": [
+    [
+     "clickjacking",
+     "Medium"
+    ],
+    [
+     "csp_weak",
+     "Low"
+    ],
+    [
+     "hsts_short",
+     "Low"
+    ],
+    [
+     "referrer_missing",
+     "Low"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "B-",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "hsts-implemented-max-age-less-than-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "csp-implemented-with-unsafe-inline",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-allow-from-origin",
+      "agree": false
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "referrer-policy-unsafe",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "report-only",
+   "about": "Only a report-only Content-Security-Policy",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "csp_missing",
+     "Medium"
+    ]
+   ],
+   "caught": [
+    [
+     "csp_missing",
+     "Medium"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "B",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "csp-not-implemented-but-reporting-enabled",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-sameorigin-or-deny",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "csp-no-script",
+   "about": "CSP that only controls frames and plugins, not scripts",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "csp_weak",
+     "Low"
+    ]
+   ],
+   "caught": [
+    [
+     "csp_weak",
+     "Low"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "B+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "csp-implemented-with-unsafe-inline",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "cors-reflect",
+   "about": "Echoes any Origin back and allows cookies",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "cors_reflect",
+     "High"
+    ]
+   ],
+   "caught": [
+    [
+     "cors_reflect",
+     "High"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-implemented-with-restricted-access",
+      "agree": false
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "cors-preflight",
+   "about": "Echoes any Origin back with cookies, but only on preflight (OPTIONS) requests",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "cors_reflect",
+     "High"
+    ]
+   ],
+   "caught": [
+    [
+     "cors_reflect",
+     "High"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-implemented-with-restricted-access",
+      "agree": false
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "cookies-bad",
+   "about": "PHP session cookie without Secure / HttpOnly / SameSite; analytics cookie without SameSite",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "cookie_httponly",
+     "Medium"
+    ],
+    [
+     "cookie_samesite",
+     "Low"
+    ],
+    [
+     "cookie_secure",
+     "Medium"
+    ]
+   ],
+   "caught": [
+    [
+     "cookie_httponly",
+     "Medium"
+    ],
+    [
+     "cookie_samesite",
+     "Low"
+    ],
+    [
+     "cookie_secure",
+     "Medium"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "B",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "cookies-session-without-httponly-flag",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "cookie-tracking",
+   "about": "Only a tracking cookie without Secure (not a login cookie)",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "cookie_secure",
+     "Low"
+    ]
+   ],
+   "caught": [
+    [
+     "cookie_secure",
+     "Low"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "cookies-without-secure-flag-but-protected-by-hsts",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "mixed",
+   "about": "HTTPS page loads a script and an image over http://",
+   "verified": false,
+   "review": [
+    "no_sri"
+   ],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "mixed_active",
+     "Medium"
+    ],
+    [
+     "mixed_passive",
+     "Low"
+    ]
+   ],
+   "caught": [
+    [
+     "mixed_active",
+     "Medium"
+    ],
+    [
+     "mixed_passive",
+     "Low"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "C",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "sri-not-implemented-and-external-scripts-not-loaded-securely",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "form-http",
+   "about": "Login form and newsletter form that send to http://",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "form_http",
+     "Medium"
+    ],
+    [
+     "form_http_password",
+     "High"
+    ]
+   ],
+   "caught": [
+    [
+     "form_http",
+     "Medium"
+    ],
+    [
+     "form_http_password",
+     "High"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "old-libs",
+   "about": "jQuery 1.12.4 from code.jquery.com and Bootstrap 3.3.7 from a CDN",
+   "verified": false,
+   "review": [
+    "no_sri"
+   ],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "old_library",
+     "Medium"
+    ],
+    [
+     "old_library",
+     "Medium"
+    ]
+   ],
+   "caught": [
+    [
+     "old_library",
+     "Medium"
+    ],
+    [
+     "old_library",
+     "Medium"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "sri-not-implemented-but-external-scripts-loaded-securely",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "angular",
+   "about": "AngularJS 1.8.2 (end of life)",
+   "verified": false,
+   "review": [
+    "no_sri"
+   ],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "old_library",
+     "Medium"
+    ]
+   ],
+   "caught": [
+    [
+     "old_library",
+     "Medium"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "sri-not-implemented-but-external-scripts-loaded-securely",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "wp-insecure",
+   "about": "WordPress 4.9.1 with the version shown; owner verified: user list and wp-config backup exposed",
+   "verified": true,
+   "review": [
+    "wp_check_plugins"
+   ],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "config_backup",
+     "High"
+    ],
+    [
+     "wp_insecure",
+     "High"
+    ],
+    [
+     "wp_users",
+     "Low"
+    ],
+    [
+     "wp_version_shown",
+     "Info"
+    ]
+   ],
+   "caught": [
+    [
+     "config_backup",
+     "High"
+    ],
+    [
+     "wp_insecure",
+     "High"
+    ],
+    [
+     "wp_users",
+     "Low"
+    ],
+    [
+     "wp_version_shown",
+     "Info"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [
+    "/.DS_Store",
+    "/.env",
+    "/.git/HEAD",
+    "/.git/config",
+    "/backup.sql",
+    "/backup.tar.gz",
+    "/backup.zip",
+    "/backup/",
+    "/database.sql",
+    "/db.sql",
+    "/dump.sql",
+    "/files/",
+    "/info.php",
+    "/phpinfo.php",
+    "/server-status",
+    "/site.zip",
+    "/uploads/",
+    "/wp-config.bak",
+    "/wp-config.old",
+    "/wp-config.php.bak",
+    "/wp-config.php.save",
+    "/wp-config.php~",
+    "/wp-content/uploads/",
+    "/wp-json/wp/v2/users",
+    "/www.zip"
+   ],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "wp-outdated",
+   "about": "WordPress 6.4.3 found from core file versions (still supported, not latest)",
+   "verified": false,
+   "review": [
+    "wp_check_plugins"
+   ],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "wp_outdated",
+     "Low"
+    ]
+   ],
+   "caught": [
+    [
+     "wp_outdated",
+     "Low"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "git-env",
+   "about": "Owner verified: .git and .env downloadable",
+   "verified": true,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "env_exposed",
+     "High"
+    ],
+    [
+     "git_exposed",
+     "High"
+    ]
+   ],
+   "caught": [
+    [
+     "env_exposed",
+     "High"
+    ],
+    [
+     "git_exposed",
+     "High"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [
+    "/.DS_Store",
+    "/.env",
+    "/.git/HEAD",
+    "/.git/config",
+    "/backup.sql",
+    "/backup.tar.gz",
+    "/backup.zip",
+    "/backup/",
+    "/database.sql",
+    "/db.sql",
+    "/dump.sql",
+    "/files/",
+    "/info.php",
+    "/phpinfo.php",
+    "/server-status",
+    "/site.zip",
+    "/uploads/",
+    "/wp-config.bak",
+    "/wp-config.old",
+    "/wp-config.php.bak",
+    "/wp-config.php.save",
+    "/wp-config.php~",
+    "/www.zip"
+   ],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "backups",
+   "about": "Owner verified: database dump, site zip and phpinfo left public",
+   "verified": true,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "backup_exposed",
+     "High"
+    ],
+    [
+     "phpinfo",
+     "Medium"
+    ]
+   ],
+   "caught": [
+    [
+     "backup_exposed",
+     "High"
+    ],
+    [
+     "phpinfo",
+     "Medium"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [
+    "/.DS_Store",
+    "/.env",
+    "/.git/HEAD",
+    "/.git/config",
+    "/backup.sql",
+    "/backup.tar.gz",
+    "/backup.zip",
+    "/backup/",
+    "/database.sql",
+    "/db.sql",
+    "/dump.sql",
+    "/files/",
+    "/info.php",
+    "/phpinfo.php",
+    "/server-status",
+    "/site.zip",
+    "/uploads/",
+    "/wp-config.bak",
+    "/wp-config.old",
+    "/wp-config.php.bak",
+    "/wp-config.php.save",
+    "/wp-config.php~",
+    "/www.zip"
+   ],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "listing",
+   "about": "Owner verified: open uploads folder, .DS_Store, Apache server-status",
+   "verified": true,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "dir_listing",
+     "Medium"
+    ],
+    [
+     "ds_store",
+     "Low"
+    ],
+    [
+     "server_status",
+     "Medium"
+    ]
+   ],
+   "caught": [
+    [
+     "dir_listing",
+     "Medium"
+    ],
+    [
+     "ds_store",
+     "Low"
+    ],
+    [
+     "server_status",
+     "Medium"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [
+    "/.DS_Store",
+    "/.env",
+    "/.git/HEAD",
+    "/.git/config",
+    "/backup.sql",
+    "/backup.tar.gz",
+    "/backup.zip",
+    "/backup/",
+    "/database.sql",
+    "/db.sql",
+    "/dump.sql",
+    "/files/",
+    "/info.php",
+    "/phpinfo.php",
+    "/server-status",
+    "/site.zip",
+    "/uploads/",
+    "/wp-config.bak",
+    "/wp-config.old",
+    "/wp-config.php.bak",
+    "/wp-config.php.save",
+    "/wp-config.php~",
+    "/www.zip"
+   ],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "baltic-bakery",
+   "about": "A typical small-company WordPress site: the app's example report",
+   "verified": true,
+   "review": [
+    "no_sri",
+    "wp_check_plugins"
+   ],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "clickjacking",
+     "Medium"
+    ],
+    [
+     "cookie_httponly",
+     "Medium"
+    ],
+    [
+     "cookie_samesite",
+     "Low"
+    ],
+    [
+     "cookie_secure",
+     "Medium"
+    ],
+    [
+     "csp_missing",
+     "Medium"
+    ],
+    [
+     "dmarc_missing",
+     "Medium"
+    ],
+    [
+     "env_exposed",
+     "High"
+    ],
+    [
+     "hsts_missing",
+     "Medium"
+    ],
+    [
+     "old_library",
+     "Medium"
+    ],
+    [
+     "referrer_missing",
+     "Low"
+    ],
+    [
+     "version_leak",
+     "Low"
+    ],
+    [
+     "wp_outdated",
+     "Low"
+    ]
+   ],
+   "caught": [
+    [
+     "clickjacking",
+     "Medium"
+    ],
+    [
+     "cookie_httponly",
+     "Medium"
+    ],
+    [
+     "cookie_samesite",
+     "Low"
+    ],
+    [
+     "cookie_secure",
+     "Medium"
+    ],
+    [
+     "csp_missing",
+     "Medium"
+    ],
+    [
+     "dmarc_missing",
+     "Medium"
+    ],
+    [
+     "env_exposed",
+     "High"
+    ],
+    [
+     "hsts_missing",
+     "Medium"
+    ],
+    [
+     "old_library",
+     "Medium"
+    ],
+    [
+     "referrer_missing",
+     "Low"
+    ],
+    [
+     "version_leak",
+     "Low"
+    ],
+    [
+     "wp_outdated",
+     "Low"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [
+    "/.DS_Store",
+    "/.env",
+    "/.git/HEAD",
+    "/.git/config",
+    "/backup.sql",
+    "/backup.tar.gz",
+    "/backup.zip",
+    "/backup/",
+    "/database.sql",
+    "/db.sql",
+    "/dump.sql",
+    "/files/",
+    "/info.php",
+    "/phpinfo.php",
+    "/server-status",
+    "/site.zip",
+    "/uploads/",
+    "/wp-config.bak",
+    "/wp-config.old",
+    "/wp-config.php.bak",
+    "/wp-config.php.save",
+    "/wp-config.php~",
+    "/wp-content/uploads/",
+    "/wp-json/wp/v2/users",
+    "/www.zip"
+   ],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "F",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "hsts-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "csp-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "x-frame-options-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": "Not set",
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": false,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "cookies-session-without-secure-flag",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": false,
+      "mozilla_result": "sri-not-implemented-but-external-scripts-loaded-securely",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "email-none",
+   "about": "No SPF and no DMARC",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "dmarc_missing",
+     "Medium"
+    ],
+    [
+     "spf_missing",
+     "Medium"
+    ]
+   ],
+   "caught": [
+    [
+     "dmarc_missing",
+     "Medium"
+    ],
+    [
+     "spf_missing",
+     "Medium"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "email-plusall",
+   "about": "SPF ends in +all, DMARC only monitors",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "dmarc_none",
+     "Low"
+    ],
+    [
+     "spf_weak",
+     "High"
+    ]
+   ],
+   "caught": [
+    [
+     "dmarc_none",
+     "Low"
+    ],
+    [
+     "spf_weak",
+     "High"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "email-two-spf",
+   "about": "Two SPF records",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "spf_multiple",
+     "Medium"
+    ]
+   ],
+   "caught": [
+    [
+     "spf_multiple",
+     "Medium"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "email-neutral",
+   "about": "SPF ends in ?all",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "spf_weak",
+     "Low"
+    ]
+   ],
+   "caught": [
+    [
+     "spf_weak",
+     "Low"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "dns-fail",
+   "about": "DNS lookups fail: email checks must say 'could not check', not OK",
+   "verified": false,
+   "review": [
+    "manual_email"
+   ],
+   "review_expected": [
+    "manual_email"
+   ],
+   "review_missed": [],
+   "expected": [],
+   "caught": [],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [
+    "spf",
+    "dmarc"
+   ],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  }
+ ],
+ "run_at": "2026-11-19 17:53 UTC"
+}

@@ -1,0 +1,44 @@
+name: Validate the scanner
+
+on:
+  push:
+    paths: ["sitecheck/**", "lab/**", ".github/workflows/validate.yml"]
+  schedule:
+    - cron: "41 5 * * 1"   # Mondays: real-world sites change, so re-check against badssl.com and Mozilla
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: pip install -r requirements.txt pytest
+      - run: npm install --global @mdn/mdn-http-observatory
+      - name: Unit tests
+        run: python -m pytest -q tests
+      - name: Test lab (needs root for ports 80/443 and /etc/hosts)
+        run: |
+          SCAN_JS="$(npm root -g)/@mdn/mdn-http-observatory/src/scan.js"
+          sudo env "PATH=$PATH" "OBSERVATORY_CLI=$SCAN_JS" "pythonLocation=$pythonLocation" $(which python) -m lab.bench
+      - name: Real world (badssl.com and public sites vs Mozilla)
+        if: always()
+        run: |
+          SCAN_JS="$(npm root -g)/@mdn/mdn-http-observatory/src/scan.js"
+          OBSERVATORY_CLI="$SCAN_JS" python -m lab.realworld
+      - name: Save results to the check-results branch
+        if: always()
+        run: |
+          mkdir -p out && cp lab/results.json lab/realworld.json out/ 2>/dev/null || true
+          cd out && git init -q -b validate-results && git add -A
+          git -c user.name=check -c user.email=check@users.noreply.github.com commit -qm "validate run ${{ github.run_id }}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" validate-results

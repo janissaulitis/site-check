@@ -1,0 +1,413 @@
+{
+ "report": {
+  "host": "baltic-bakery.lab.test",
+  "domain": "baltic-bakery.lab.test",
+  "results": [
+   {
+    "id": "env_exposed",
+    "status": "problem",
+    "sev": "High",
+    "area": "Exposed files",
+    "title": "The .env file with settings and passwords can be downloaded",
+    "evidence": "Readable at https://baltic-bakery.lab.test/.env (content matches the file type)",
+    "why": "It usually holds the database password, API keys and the app's secret key: full access for anyone.",
+    "fix": "Block it right away (Nginx `location ~ /\\.env { deny all; }`, Apache `<Files .env> Require all denied </Files>`), move it outside the public folder, and **change every password and key in it**.",
+    "retest": "`curl -s -o /dev/null -w '%{http_code}' https://baltic-bakery.lab.test/.env` shows 403 or 404. Then scan again."
+   },
+   {
+    "id": "hsts_missing",
+    "status": "problem",
+    "sev": "Medium",
+    "area": "Headers",
+    "title": "HSTS is not set",
+    "evidence": "No Strict-Transport-Security header on the HTTPS page",
+    "why": "Even with a redirect, a visitor's first request goes out unprotected and can be hijacked on public Wi-Fi. HSTS tells the browser to always use HTTPS for this site.",
+    "fix": "Netlify: add the line under `/*` in a `_headers` file.\nCloudflare: Rules \u2192 Transform Rules \u2192 Modify response header \u2192 Set static.\nNginx: `add_header Strict-Transport-Security \"max-age=31536000; includeSubDomains\" always;` in the server block.\nApache: `Header always set Strict-Transport-Security \"max-age=31536000; includeSubDomains\"` in the site config or .htaccess.\nWordPress: set it at your host or CDN, or in .htaccess on Apache hosting.\nCloudflare also has it under SSL/TLS \u2192 Edge Certificates \u2192 HSTS.",
+    "retest": "`curl -sI https://baltic-bakery.lab.test | grep -i strict-transport-security` shows `max-age=31536000`. Then scan again."
+   },
+   {
+    "id": "csp_missing",
+    "status": "problem",
+    "sev": "Medium",
+    "area": "Headers",
+    "title": "No Content-Security-Policy",
+    "evidence": "No Content-Security-Policy header",
+    "why": "If an attacker manages to inject a script (through a comment, a plugin bug or a hacked ad), nothing stops the browser from running it. A policy limits where scripts may come from.",
+    "fix": "Start with a report-only policy so nothing breaks, read the reports, then enforce. A safe first step that blocks plugins and framing: `Content-Security-Policy: object-src 'none'; base-uri 'self'; frame-ancestors 'self'`.\nNetlify: add the line under `/*` in a `_headers` file.\nCloudflare: Rules \u2192 Transform Rules \u2192 Modify response header \u2192 Set static.\nNginx: `add_header Content-Security-Policy \"object-src 'none'; base-uri 'self'; frame-ancestors 'self'\" always;` in the server block.\nApache: `Header always set Content-Security-Policy \"object-src 'none'; base-uri 'self'; frame-ancestors 'self'\"` in the site config or .htaccess.\nWordPress: set it at your host or CDN, or in .htaccess on Apache hosting.",
+    "retest": "`curl -sI https://baltic-bakery.lab.test | grep -i content-security-policy` shows the policy. Then scan again."
+   },
+   {
+    "id": "clickjacking",
+    "status": "problem",
+    "sev": "Medium",
+    "area": "Headers",
+    "title": "Other sites can show this site inside a frame (clickjacking)",
+    "evidence": "No X-Frame-Options (DENY / SAMEORIGIN) and no frame-ancestors in a Content-Security-Policy",
+    "why": "An attacker's page can load your site invisibly and trick visitors into clicking buttons on it, for example 'delete' or 'pay', while they think they are clicking something else.",
+    "fix": "Netlify: add the line under `/*` in a `_headers` file.\nCloudflare: Rules \u2192 Transform Rules \u2192 Modify response header \u2192 Set static.\nNginx: `add_header X-Frame-Options \"SAMEORIGIN\" always;` in the server block.\nApache: `Header always set X-Frame-Options \"SAMEORIGIN\"` in the site config or .htaccess.\nWordPress: set it at your host or CDN, or in .htaccess on Apache hosting.\n(Or `frame-ancestors 'self'` in the Content-Security-Policy.)",
+    "retest": "`curl -sI https://baltic-bakery.lab.test | grep -i x-frame-options` shows `SAMEORIGIN` or `DENY`. Then scan again."
+   },
+   {
+    "id": "cookie_secure",
+    "status": "problem",
+    "sev": "Medium",
+    "area": "Cookies",
+    "title": "Cookies can be sent without encryption",
+    "evidence": "Without Secure: PHPSESSID",
+    "why": "A cookie without the Secure flag also travels over plain http://, where it can be read on public Wi-Fi. For a login cookie that means someone can take over the session.",
+    "fix": "Add `Secure` to the cookie. PHP: `session.cookie_secure = 1`. Most frameworks have a 'secure cookies' setting.",
+    "retest": "`curl -sI https://baltic-bakery.lab.test | grep -i set-cookie` shows `Secure` on every cookie. Then scan again."
+   },
+   {
+    "id": "cookie_httponly",
+    "status": "problem",
+    "sev": "Medium",
+    "area": "Cookies",
+    "title": "The login cookie can be read by scripts",
+    "evidence": "Login/session cookies without HttpOnly: PHPSESSID",
+    "why": "If any script gets injected into the page, it can steal the login cookie and take over the account.",
+    "fix": "Add `HttpOnly` to session cookies. PHP: `session.cookie_httponly = 1`.",
+    "retest": "`curl -sI https://baltic-bakery.lab.test | grep -i set-cookie` shows `HttpOnly` on the session cookie. Then scan again."
+   },
+   {
+    "id": "old_library",
+    "status": "problem",
+    "sev": "Medium",
+    "area": "Page",
+    "title": "An outdated JavaScript library with known security holes",
+    "evidence": "jQuery UI 1.12.1 (https://code.jquery.com/ui/1.12.1/jquery-ui.min.js). jQuery UI before 1.13.2 has cross-site scripting holes (CVE-2021-41182/41183/41184, CVE-2022-31160).",
+    "why": "Known holes in old versions are published with working examples, so they are easy to use against the site.",
+    "fix": "Update the library to a current version (jQuery 3.7+, Bootstrap 5, AngularJS \u2192 a supported framework). WordPress: update the theme and plugins; the old copy usually comes from one of them.",
+    "retest": "View the page source and check the version in the script address. Then scan again."
+   },
+   {
+    "id": "dmarc_missing",
+    "status": "problem",
+    "sev": "Medium",
+    "area": "Email",
+    "title": "No DMARC record",
+    "evidence": "No TXT record starting v=DMARC1 on _dmarc.baltic-bakery.lab.test",
+    "why": "Without DMARC, mail servers don't know what to do with fake mail in your name, and you never hear about it. It is also required by Google and Yahoo for bulk senders since 2024.",
+    "fix": "Add a TXT record on `_dmarc.baltic-bakery.lab.test`: `v=DMARC1; p=none; rua=mailto:dmarc@baltic-bakery.lab.test`. Read the reports for 2\u20134 weeks, then change to `p=quarantine`.",
+    "retest": "`dig +short TXT _dmarc.baltic-bakery.lab.test` shows `v=DMARC1`. Then scan again."
+   },
+   {
+    "id": "referrer_missing",
+    "status": "problem",
+    "sev": "Low",
+    "area": "Headers",
+    "title": "No Referrer-Policy (or a leaky one)",
+    "evidence": "No Referrer-Policy header",
+    "why": "Full page addresses, which can contain search terms, order numbers or reset codes, are sent to every other site the visitor goes to from yours.",
+    "fix": "Netlify: add the line under `/*` in a `_headers` file.\nCloudflare: Rules \u2192 Transform Rules \u2192 Modify response header \u2192 Set static.\nNginx: `add_header Referrer-Policy \"strict-origin-when-cross-origin\" always;` in the server block.\nApache: `Header always set Referrer-Policy \"strict-origin-when-cross-origin\"` in the site config or .htaccess.\nWordPress: set it at your host or CDN, or in .htaccess on Apache hosting.",
+    "retest": "`curl -sI https://baltic-bakery.lab.test | grep -i referrer-policy` shows the policy. Then scan again."
+   },
+   {
+    "id": "version_leak",
+    "status": "problem",
+    "sev": "Low",
+    "area": "Headers",
+    "title": "The server tells everyone its software version",
+    "evidence": "server: Apache/2.4.52 (Ubuntu)",
+    "why": "Version numbers let an attacker look up exactly which known holes apply, without any effort.",
+    "fix": "Nginx: `server_tokens off;`\nApache: `ServerTokens Prod` and `ServerSignature Off`\nPHP: `expose_php = Off` in php.ini (removes X-Powered-By).",
+    "retest": "`curl -sI https://baltic-bakery.lab.test | grep -iE 'server|x-powered-by'` shows no version numbers. Then scan again."
+   },
+   {
+    "id": "cookie_samesite",
+    "status": "problem",
+    "sev": "Low",
+    "area": "Cookies",
+    "title": "Cookies have no SameSite setting",
+    "evidence": "Without SameSite: PHPSESSID",
+    "why": "SameSite stops other sites from making a logged-in visitor's browser send requests to yours (cross-site request forgery). Browsers now default to Lax, but older ones don't.",
+    "fix": "Add `SameSite=Lax` (or `Strict`) to cookies. PHP: `session.cookie_samesite = \"Lax\"`.",
+    "retest": "`curl -sI https://baltic-bakery.lab.test | grep -i set-cookie` shows `SameSite=`. Then scan again."
+   },
+   {
+    "id": "wp_outdated",
+    "status": "problem",
+    "sev": "Low",
+    "area": "Page",
+    "title": "WordPress is not the latest version",
+    "evidence": "WordPress 6.4.3; wordpress.org lists it as outdated (still supported)",
+    "why": "It is still getting security fixes, but staying behind makes the next urgent update harder.",
+    "fix": "Update WordPress (Dashboard \u2192 Updates), with a backup first.",
+    "retest": "Scan again."
+   },
+   {
+    "id": "no_sri",
+    "status": "review",
+    "sev": "Review",
+    "area": "Page",
+    "title": "Scripts from other sites load without an integrity check",
+    "evidence": "https://code.jquery.com/ui/1.12.1/jquery-ui.min.js",
+    "why": "If that other site (a CDN, a widget) is hacked, its script runs on your page. An integrity hash makes the browser refuse a changed file. Not possible for scripts that change often, like analytics.",
+    "fix": "For fixed library files from a CDN, add `integrity=\"sha384-...\" crossorigin=\"anonymous\"` (cdnjs and jsDelivr show the hash), or host the file yourself.",
+    "retest": "View the page source: fixed CDN scripts have an integrity attribute. Mozilla's 'Subresource integrity' test passes."
+   },
+   {
+    "id": "wp_check_plugins",
+    "status": "review",
+    "sev": "Review",
+    "area": "Page",
+    "title": "WordPress: plugins and theme can't be checked from outside",
+    "evidence": "WordPress 6.4.3 found from the page's files",
+    "why": "Most WordPress break-ins come through outdated plugins, which a passive check can't see reliably.",
+    "fix": "Dashboard \u2192 Updates: update everything, delete plugins you don't use, turn on automatic plugin updates.",
+    "retest": "Dashboard \u2192 Updates shows nothing waiting. Check again monthly."
+   },
+   {
+    "id": "https",
+    "status": "ok",
+    "sev": null,
+    "area": "HTTPS",
+    "title": "HTTPS works with a trusted certificate",
+    "evidence": "TLSv1.3, certificate valid until 2027-02-07"
+   },
+   {
+    "id": "tls",
+    "status": "ok",
+    "sev": null,
+    "area": "HTTPS",
+    "title": "Only TLS 1.2 or newer",
+    "evidence": "TLS 1.0 and 1.1 refused"
+   },
+   {
+    "id": "redirect",
+    "status": "ok",
+    "sev": null,
+    "area": "HTTPS",
+    "title": "http:// sends visitors to HTTPS",
+    "evidence": "http://baltic-bakery.lab.test/ (301) \u2192 https://baltic-bakery.lab.test/ (200)"
+   },
+   {
+    "id": "nosniff",
+    "status": "ok",
+    "sev": null,
+    "area": "Headers",
+    "title": "X-Content-Type-Options: nosniff",
+    "evidence": "X-Content-Type-Options: nosniff"
+   },
+   {
+    "id": "cors",
+    "status": "ok",
+    "sev": null,
+    "area": "Headers",
+    "title": "CORS does not trust other sites",
+    "evidence": ""
+   },
+   {
+    "id": "mixed",
+    "status": "ok",
+    "sev": null,
+    "area": "Page",
+    "title": "Everything on the page loads over HTTPS",
+    "evidence": ""
+   },
+   {
+    "id": "forms",
+    "status": "ok",
+    "sev": null,
+    "area": "Page",
+    "title": "Forms send over HTTPS (or there are none)",
+    "evidence": "1 form(s)"
+   },
+   {
+    "id": "spf",
+    "status": "ok",
+    "sev": null,
+    "area": "Email",
+    "title": "SPF record is in place",
+    "evidence": "v=spf1 include:spf.protection.outlook.com -all"
+   }
+  ],
+  "facts": {
+   "host": "baltic-bakery.lab.test",
+   "domain": "baltic-bakery.lab.test",
+   "verified": true,
+   "tls": {
+    "ok": true,
+    "problem": null,
+    "detail": "",
+    "days_left": 79,
+    "not_after": "2027-02-07",
+    "version": "TLSv1.3",
+    "old_tls": false,
+    "reachable": true
+   },
+   "http_chain": [
+    [
+     "http://baltic-bakery.lab.test/",
+     301
+    ],
+    [
+     "https://baltic-bakery.lab.test/",
+     200
+    ]
+   ],
+   "cors": {
+    "GET": {
+     "acao": null,
+     "acac": ""
+    },
+    "OPTIONS": {
+     "acao": null,
+     "acac": ""
+    }
+   },
+   "cookies": [
+    {
+     "name": "PHPSESSID",
+     "secure": false,
+     "httponly": false,
+     "samesite": null,
+     "session": true
+    }
+   ],
+   "libs": [
+    [
+     "jQuery UI",
+     "1.12.1",
+     "https://code.jquery.com/ui/1.12.1/jquery-ui.min.js",
+     "jQuery UI before 1.13.2 has cross-site scripting holes (CVE-2021-41182/41183/41184, CVE-2022-31160)"
+    ]
+   ],
+   "wordpress": {
+    "is_wp": true,
+    "version": "6.4.3",
+    "status": "outdated"
+   },
+   "spf": [
+    "v=spf1 include:spf.protection.outlook.com -all"
+   ],
+   "dmarc": [],
+   "probe_hits": {
+    "env_exposed": [
+     "https://baltic-bakery.lab.test/.env"
+    ]
+   },
+   "probed": true,
+   "page": {
+    "url": "https://baltic-bakery.lab.test/",
+    "status": 200,
+    "chain": [
+     [
+      "https://baltic-bakery.lab.test/",
+      200
+     ]
+    ],
+    "headers": {
+     "content-type": [
+      "text/html; charset=utf-8"
+     ],
+     "content-length": [
+      "454"
+     ],
+     "x-content-type-options": [
+      "nosniff"
+     ],
+     "server": [
+      "Apache/2.4.52 (Ubuntu)"
+     ]
+    }
+   }
+  },
+  "scanned_at": "2026-11-19 17:52 UTC"
+ },
+ "mozilla": {
+  "grade": "F",
+  "rows": [
+   {
+    "test": "strict-transport-security",
+    "name": "HSTS",
+    "ours": false,
+    "ours_note": null,
+    "mozilla": false,
+    "mozilla_result": "hsts-not-implemented",
+    "agree": true
+   },
+   {
+    "test": "redirection",
+    "name": "Redirect to HTTPS",
+    "ours": true,
+    "ours_note": null,
+    "mozilla": true,
+    "mozilla_result": "redirection-to-https",
+    "agree": true
+   },
+   {
+    "test": "content-security-policy",
+    "name": "Content-Security-Policy",
+    "ours": false,
+    "ours_note": null,
+    "mozilla": false,
+    "mozilla_result": "csp-not-implemented",
+    "agree": true
+   },
+   {
+    "test": "x-content-type-options",
+    "name": "X-Content-Type-Options",
+    "ours": true,
+    "ours_note": null,
+    "mozilla": true,
+    "mozilla_result": "x-content-type-options-nosniff",
+    "agree": true
+   },
+   {
+    "test": "x-frame-options",
+    "name": "Clickjacking protection",
+    "ours": false,
+    "ours_note": null,
+    "mozilla": false,
+    "mozilla_result": "x-frame-options-not-implemented",
+    "agree": true
+   },
+   {
+    "test": "referrer-policy",
+    "name": "Referrer-Policy",
+    "ours": true,
+    "ours_note": "Not set",
+    "mozilla": true,
+    "mozilla_result": "referrer-policy-not-implemented",
+    "agree": true
+   },
+   {
+    "test": "cookies",
+    "name": "Cookies",
+    "ours": false,
+    "ours_note": null,
+    "mozilla": false,
+    "mozilla_result": "cookies-session-without-secure-flag",
+    "agree": true
+   },
+   {
+    "test": "cross-origin-resource-sharing",
+    "name": "CORS",
+    "ours": true,
+    "ours_note": null,
+    "mozilla": true,
+    "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+    "agree": true
+   },
+   {
+    "test": "subresource-integrity",
+    "name": "Subresource integrity",
+    "ours": null,
+    "ours_note": null,
+    "mozilla": false,
+    "mozilla_result": "sri-not-implemented-but-external-scripts-loaded-securely",
+    "agree": null
+   },
+   {
+    "test": "cross-origin-resource-policy",
+    "name": "Cross-Origin-Resource-Policy",
+    "ours": null,
+    "ours_note": null,
+    "mozilla": true,
+    "mozilla_result": "corp-not-implemented",
+    "agree": null
+   }
+  ]
+ }
+}
