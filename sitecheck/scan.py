@@ -281,6 +281,7 @@ def scan(target, net: Net, verified=False, wp_status=None):
     P = lambda cid, ev, sev=None: R.append(problem(cid, ev, sev, ctx))
     Q = lambda cid, ev: R.append(review(cid, ev, ctx))
     facts["Q"] = Q
+    facts["P"] = P
 
     # ------------------------------------------------------------ HTTPS
     tls = None
@@ -386,6 +387,7 @@ def scan(target, net: Net, verified=False, wp_status=None):
     R.sort(key=lambda r: ({"problem": 0, "review": 1, "unknown": 2, "ok": 3}[r["status"]], SEV_ORDER.get(r["sev"], 9),
                           K.AREAS.index(r["area"])))
     facts.pop("Q", None)
+    facts.pop("P", None)
     pg = facts.pop("page", None)
     facts.pop("http_page", None)
     facts.pop("doc", None)
@@ -574,6 +576,7 @@ def _content(page, doc, on_https, R, P, wp_status, facts):
     if not ver:
         m2 = re.search(r"/wp-includes/(?:css|js)/[^\"'?]+\?ver=(\d+\.\d+(?:\.\d+)?)", body)
         ver = m2.group(1) if m2 and not re.search(r"jquery", m2.group(0)) else None
+    _php(page, body, is_wp, facts)
     facts["wordpress"] = dict(is_wp=is_wp, version=ver)
     if is_wp:
         facts["Q"]("wp_check_plugins", f"WordPress {ver or '(version hidden)'} found from the page's files")
@@ -591,6 +594,34 @@ def _content(page, doc, on_https, R, P, wp_status, facts):
             P("wp_outdated", f"WordPress {ver}; wordpress.org lists it as outdated (still supported)")
         if m:
             P("wp_version_shown", f'<meta name="generator" content="{gen}">')
+
+
+PHP_FIXED = {(8, 2): (8, 2, 35), (8, 3): (8, 3, 36), (8, 4): (8, 4, 27), (8, 5): (8, 5, 12)}  # PHP2Shell fixes, 21 Oct 2026
+
+
+def _php(page, body, is_wp, facts):
+    """PHP2Shell: flag a visible vulnerable PHP version; if PHP is clearly in use but the version is hidden, ask to check."""
+    xpb = " ".join(page.all("x-powered-by"))
+    m = re.search(r"PHP/(\d+)\.(\d+)\.(\d+)", xpb)
+    if m:
+        v = tuple(int(x) for x in m.groups())
+        fixed = PHP_FIXED.get(v[:2])
+        facts["php"] = ".".join(map(str, v))
+        if fixed is None and v[:2] > (8, 5):
+            return
+        if fixed is None:  # 8.1 and older: end of life
+            facts["P"]("php2shell", f"X-Powered-By: PHP/{facts['php']}. Branch {v[0]}.{v[1]} is end of life and gets no "
+                                    "upstream fix (some Linux distributions backport one: ask the host).")
+            facts["P"]("php_eol", f"PHP {facts['php']}")
+        elif v < fixed:
+            facts["P"]("php2shell", f"X-Powered-By: PHP/{facts['php']}; fixed in {'.'.join(map(str, fixed))}. "
+                                    "(A host may have backported the fix without changing the number: ask them.)")
+        return
+    cookies = " ".join(page.all("set-cookie") + page.hop_cookies)
+    php_signs = is_wp or "PHPSESSID" in cookies or re.search(r"\.php[\"'?]", body) or "/wp-content/" in body \
+        or "Joomla" in body or "Drupal" in (page.h("x-generator") or "") + body[:5000]
+    if php_signs:
+        facts["Q"]("manual_php", "PHP in use (" + ("WordPress" if is_wp else "PHP pages or session cookie") + "), version hidden")
 
 
 def _email(net, domain, R, P, facts):

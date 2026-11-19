@@ -1,13 +1,13 @@
 {
- "sites": 40,
- "clean_sites": 10,
- "planted": 64,
- "caught": 64,
- "high_planted": 16,
+ "sites": 43,
+ "clean_sites": 11,
+ "planted": 69,
+ "caught": 69,
+ "high_planted": 18,
  "high_missed": [],
  "false_alarms": [],
- "mozilla_compared": 312,
- "mozilla_agree": 309,
+ "mozilla_compared": 336,
+ "mozilla_agree": 333,
  "disagreements": [
   {
    "site": "weak-headers",
@@ -47,9 +47,9 @@
   "lab name": "refused",
   "redirect to metadata": "refused"
  },
- "review_expected": 9,
- "review_found": 9,
- "review_total": 19,
+ "review_expected": 10,
+ "review_found": 10,
+ "review_total": 26,
  "checks": {
   "1 no High misses": true,
   "2 >=95% planted found": true,
@@ -609,6 +609,7 @@
    "verified": true,
    "review": [
     "dmarc_partial",
+    "manual_php",
     "spf_softfail",
     "wp_check_plugins"
    ],
@@ -982,6 +983,7 @@
    "about": "Theme loads its own bootstrap.min.js?ver=1.0.2 (the theme's version, not Bootstrap's)",
    "verified": false,
    "review": [
+    "manual_php",
     "no_sri",
     "wp_check_plugins"
    ],
@@ -2115,6 +2117,14 @@
      "Low"
     ],
     [
+     "php2shell",
+     "High"
+    ],
+    [
+     "php_eol",
+     "Medium"
+    ],
+    [
      "referrer_missing",
      "Low"
     ],
@@ -2139,6 +2149,14 @@
     [
      "nosniff_missing",
      "Low"
+    ],
+    [
+     "php2shell",
+     "High"
+    ],
+    [
+     "php_eol",
+     "Medium"
     ],
     [
      "referrer_missing",
@@ -2218,6 +2236,368 @@
       "ours_note": null,
       "mozilla": true,
       "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "php-unpatched",
+   "about": "PHP 8.3.20 shown in X-Powered-By: vulnerable to PHP2Shell",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "php2shell",
+     "High"
+    ],
+    [
+     "version_leak",
+     "Low"
+    ]
+   ],
+   "caught": [
+    [
+     "php2shell",
+     "High"
+    ],
+    [
+     "version_leak",
+     "Low"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "php-patched",
+   "about": "PHP 8.4.27 shown: has the PHP2Shell fix, only the version leak is a problem",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "version_leak",
+     "Low"
+    ]
+   ],
+   "caught": [
+    [
+     "version_leak",
+     "Low"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "php-hidden",
+   "about": "PHP site (session cookie) with the version hidden: must ask to check, not flag",
+   "verified": false,
+   "review": [
+    "manual_php"
+   ],
+   "review_expected": [
+    "manual_php"
+   ],
+   "review_missed": [],
+   "expected": [],
+   "caught": [],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-secure-with-httponly-sessions-and-samesite",
       "agree": true
      },
      {
@@ -2878,7 +3258,9 @@
    "slug": "cookies-bad",
    "about": "PHP session cookie without Secure / HttpOnly / SameSite; analytics cookie without SameSite",
    "verified": false,
-   "review": [],
+   "review": [
+    "manual_php"
+   ],
    "review_expected": [],
    "review_missed": [],
    "expected": [
@@ -3645,6 +4027,7 @@
    "about": "WordPress 4.9.1 with the version shown; owner verified: user list and wp-config backup exposed",
    "verified": true,
    "review": [
+    "manual_php",
     "wp_check_plugins"
    ],
    "review_expected": [],
@@ -3817,6 +4200,7 @@
    "about": "WordPress 6.4.3 found from core file versions (still supported, not latest)",
    "verified": false,
    "review": [
+    "manual_php",
     "wp_check_plugins"
    ],
    "review_expected": [],
@@ -4403,6 +4787,7 @@
    "about": "A typical small-company WordPress site: the app's example report",
    "verified": true,
    "review": [
+    "manual_php",
     "no_sri",
     "wp_check_plugins"
    ],
@@ -5249,5 +5634,5 @@
    }
   }
  ],
- "run_at": "2026-11-19 18:00 UTC"
+ "run_at": "2026-11-19 23:14 UTC"
 }

@@ -281,6 +281,24 @@ C = {
         retest="`https://{host}/wp-json/wp/v2/users` shows an error, not a list. Then scan again."),
 }
 
+# ------------------------------------------------- known attacks (2026)
+C.update({
+    "php2shell": dict(
+        area="Page", sev=H, title="PHP version hit by PHP2Shell (being exploited since October 2026)",
+        why="PHP2Shell (CVE-2026-109618 / 109619) lets an attacker run their own code on the server without logging in. "
+            "It works on ordinary WordPress, Drupal and Joomla sites, CISA lists it as actively exploited, and attacks "
+            "started before the fix was out.",
+        fix="Ask the host to move the site to PHP 8.2.35, 8.3.36, 8.4.27 or 8.5.12 or newer (most hosting panels have a "
+            "'PHP version' switch). If the host says their build has the fix backported, ask them to confirm it in writing. "
+            "Until then: `session.upload_progress.enabled=0` and `display_errors=Off`.",
+        retest="Hosting panel → PHP version shows a fixed release (or the host confirms the backport). Then scan again."),
+    "php_eol": dict(
+        area="Page", sev=M, title="PHP version no longer supported",
+        why="This PHP branch gets no security fixes any more, so every new hole (like PHP2Shell) stays open.",
+        fix="Move to PHP 8.3 or newer with the host (test the site on a copy first; old plugins may need updating).",
+        retest="Hosting panel → PHP version shows 8.3 or newer. Then scan again."),
+})
+
 # --------------------------------------------------------- worth a closer look
 # Not problems: borderline settings, things a passive check can't decide, and checks that could not run.
 # Each says what to test by hand.
@@ -325,6 +343,12 @@ C.update({
         why="Most WordPress break-ins come through outdated plugins, which a passive check can't see reliably.",
         fix="Dashboard → Updates: update everything, delete plugins you don't use, turn on automatic plugin updates.",
         retest="Dashboard → Updates shows nothing waiting. Check again monthly."),
+    "manual_php": dict(
+        area="Page", sev=R, title="Runs on PHP: check it is patched for PHP2Shell",
+        why="The site runs on PHP but hides the version, so a scan can't tell whether it has the October 2026 PHP2Shell "
+            "fix. Hidden is not the same as safe: attacks are automated and don't care.",
+        fix="Ask the host (or look in the hosting panel) which PHP version the site runs.",
+        retest="It should be 8.2.35, 8.3.36, 8.4.27, 8.5.12 or newer, or the host confirms the fix is backported."),
     "manual_old_tls": dict(
         area="HTTPS", sev=R, title="Old TLS 1.0 / 1.1: check by hand",
         why="This checker's TLS library could not offer the old versions, so it can't say whether the server accepts them.",
