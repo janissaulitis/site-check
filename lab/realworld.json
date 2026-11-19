@@ -1,0 +1,473 @@
+{
+ "run_at": "2026-11-19 18:20 UTC",
+ "badssl": [
+  {
+   "host": "expired.badssl.com",
+   "must": [
+    "cert_expired"
+   ],
+   "got": [
+    "cert_expired",
+    "clickjacking",
+    "csp_missing",
+    "dmarc_missing",
+    "hsts_missing",
+    "nosniff_missing",
+    "old_tls",
+    "referrer_missing",
+    "spf_missing",
+    "version_leak"
+   ],
+   "unknown": [],
+   "ok": true,
+   "note": ""
+  },
+  {
+   "host": "wrong.host.badssl.com",
+   "must": [
+    "cert_name"
+   ],
+   "got": [
+    "cert_name",
+    "clickjacking",
+    "csp_missing",
+    "dmarc_missing",
+    "hsts_missing",
+    "nosniff_missing",
+    "old_tls",
+    "referrer_missing",
+    "spf_missing",
+    "version_leak"
+   ],
+   "unknown": [],
+   "ok": true,
+   "note": ""
+  },
+  {
+   "host": "self-signed.badssl.com",
+   "must": [
+    "cert_untrusted"
+   ],
+   "got": [
+    "cert_untrusted",
+    "clickjacking",
+    "csp_missing",
+    "dmarc_missing",
+    "hsts_missing",
+    "nosniff_missing",
+    "old_tls",
+    "referrer_missing",
+    "spf_missing",
+    "version_leak"
+   ],
+   "unknown": [],
+   "ok": true,
+   "note": ""
+  },
+  {
+   "host": "untrusted-root.badssl.com",
+   "must": [
+    "cert_untrusted"
+   ],
+   "got": [
+    "cert_untrusted",
+    "clickjacking",
+    "csp_missing",
+    "dmarc_missing",
+    "hsts_missing",
+    "nosniff_missing",
+    "old_tls",
+    "referrer_missing",
+    "spf_missing",
+    "version_leak"
+   ],
+   "unknown": [],
+   "ok": true,
+   "note": ""
+  },
+  {
+   "host": "incomplete-chain.badssl.com",
+   "must": [
+    "cert_untrusted"
+   ],
+   "got": [
+    "cert_untrusted",
+    "clickjacking",
+    "csp_missing",
+    "dmarc_missing",
+    "hsts_missing",
+    "nosniff_missing",
+    "old_tls",
+    "referrer_missing",
+    "spf_missing",
+    "version_leak"
+   ],
+   "unknown": [],
+   "ok": true,
+   "note": "browsers sometimes repair this; servers and phones often don't"
+  },
+  {
+   "host": "tls-v1-0.badssl.com",
+   "must": [
+    "old_tls"
+   ],
+   "got": [
+    "dmarc_missing",
+    "old_tls",
+    "spf_missing"
+   ],
+   "unknown": [
+    "cookies",
+    "cors",
+    "csp",
+    "forms",
+    "frames",
+    "hsts",
+    "libs",
+    "mixed",
+    "nosniff",
+    "referrer",
+    "version"
+   ],
+   "ok": true,
+   "note": ""
+  },
+  {
+   "host": "tls-v1-1.badssl.com",
+   "must": [
+    "old_tls"
+   ],
+   "got": [
+    "dmarc_missing",
+    "old_tls",
+    "spf_missing"
+   ],
+   "unknown": [
+    "cookies",
+    "cors",
+    "csp",
+    "forms",
+    "frames",
+    "hsts",
+    "libs",
+    "mixed",
+    "nosniff",
+    "referrer",
+    "version"
+   ],
+   "ok": true,
+   "note": ""
+  },
+  {
+   "host": "mixed-script.badssl.com",
+   "must": [
+    "mixed_active"
+   ],
+   "got": [
+    "clickjacking",
+    "csp_missing",
+    "dmarc_missing",
+    "hsts_missing",
+    "mixed_active",
+    "nosniff_missing",
+    "old_tls",
+    "referrer_missing",
+    "spf_missing",
+    "version_leak"
+   ],
+   "unknown": [],
+   "ok": true,
+   "note": ""
+  },
+  {
+   "host": "hsts.badssl.com",
+   "must": [],
+   "got": [
+    "clickjacking",
+    "csp_missing",
+    "dmarc_missing",
+    "http_no_redirect",
+    "mixed_passive",
+    "nosniff_missing",
+    "old_tls",
+    "referrer_missing",
+    "spf_missing",
+    "version_leak"
+   ],
+   "unknown": [],
+   "ok": true,
+   "note": "HSTS set: must not be reported missing"
+  },
+  {
+   "host": "revoked.badssl.com",
+   "must": [],
+   "got": [
+    "clickjacking",
+    "csp_missing",
+    "dmarc_missing",
+    "hsts_missing",
+    "nosniff_missing",
+    "old_tls",
+    "referrer_missing",
+    "spf_missing",
+    "version_leak"
+   ],
+   "unknown": [],
+   "ok": true,
+   "note": "revocation is not checked (known limit)"
+  }
+ ],
+ "public": [
+  {
+   "host": "janis-saulitis-portfolio.netlify.app",
+   "grade": "C",
+   "compared": 8,
+   "agree": 8,
+   "differ": [],
+   "problems": 2
+  },
+  {
+   "host": "alert-desk.streamlit.app",
+   "grade": "D-",
+   "compared": 8,
+   "agree": 6,
+   "differ": [
+    {
+     "test": "HSTS",
+     "ours": true,
+     "mozilla": false,
+     "result": "hsts-not-implemented"
+    },
+    {
+     "test": "Cookies",
+     "ours": false,
+     "mozilla": true,
+     "result": "cookies-secure-with-httponly-sessions-and-samesite"
+    }
+   ],
+   "problems": 3
+  },
+  {
+   "host": "github.com",
+   "grade": "A+",
+   "compared": 8,
+   "agree": 8,
+   "differ": [],
+   "problems": 0
+  },
+  {
+   "host": "www.mozilla.org",
+   "grade": "B+",
+   "compared": 8,
+   "agree": 8,
+   "differ": [],
+   "problems": 1
+  },
+  {
+   "host": "developer.mozilla.org",
+   "grade": "A+",
+   "compared": 8,
+   "agree": 8,
+   "differ": [],
+   "problems": 0
+  },
+  {
+   "host": "www.wikipedia.org",
+   "grade": "C",
+   "compared": 8,
+   "agree": 8,
+   "differ": [],
+   "problems": 2
+  },
+  {
+   "host": "www.gov.uk",
+   "grade": "A+",
+   "compared": 8,
+   "agree": 8,
+   "differ": [],
+   "problems": 2
+  },
+  {
+   "host": "www.lsm.lv",
+   "grade": "D+",
+   "compared": 8,
+   "agree": 6,
+   "differ": [
+    {
+     "test": "Redirect to HTTPS",
+     "ours": true,
+     "mozilla": false,
+     "result": "redirection-missing"
+    },
+    {
+     "test": "X-Content-Type-Options",
+     "ours": false,
+     "mozilla": true,
+     "result": "x-content-type-options-nosniff"
+    }
+   ],
+   "problems": 1
+  },
+  {
+   "host": "www.latvija.gov.lv",
+   "grade": "C",
+   "compared": 8,
+   "agree": 8,
+   "differ": [],
+   "problems": 2
+  },
+  {
+   "host": "www.delfi.lv",
+   "grade": "F",
+   "compared": 8,
+   "agree": 8,
+   "differ": [],
+   "problems": 1
+  },
+  {
+   "host": "www.swedbank.lv",
+   "grade": "B",
+   "compared": 8,
+   "agree": 8,
+   "differ": [],
+   "problems": 0
+  },
+  {
+   "host": "www.airbaltic.com",
+   "grade": "C",
+   "compared": 8,
+   "agree": 7,
+   "differ": [
+    {
+     "test": "Cookies",
+     "ours": false,
+     "mozilla": true,
+     "result": "cookies-secure-with-httponly-sessions-and-samesite"
+    }
+   ],
+   "problems": 2
+  },
+  {
+   "host": "bolt.eu",
+   "grade": "C",
+   "compared": 8,
+   "agree": 8,
+   "differ": [],
+   "problems": 0
+  },
+  {
+   "host": "www.printful.com",
+   "grade": "C",
+   "compared": 8,
+   "agree": 7,
+   "differ": [
+    {
+     "test": "Cookies",
+     "ours": false,
+     "mozilla": true,
+     "result": "cookies-secure-with-httponly-sessions-and-samesite"
+    }
+   ],
+   "problems": 2
+  },
+  {
+   "host": "www.tet.lv",
+   "grade": "D-",
+   "compared": 8,
+   "agree": 8,
+   "differ": [],
+   "problems": 0
+  },
+  {
+   "host": "www.lmt.lv",
+   "grade": "C+",
+   "compared": 8,
+   "agree": 7,
+   "differ": [
+    {
+     "test": "HSTS",
+     "ours": true,
+     "mozilla": false,
+     "result": "hsts-header-invalid"
+    }
+   ],
+   "problems": 1
+  },
+  {
+   "host": "www.citadele.lv",
+   "grade": "D+",
+   "compared": 8,
+   "agree": 8,
+   "differ": [],
+   "problems": 3
+  },
+  {
+   "host": "www.rimi.lv",
+   "grade": "C+",
+   "compared": 8,
+   "agree": 7,
+   "differ": [
+    {
+     "test": "Redirect to HTTPS",
+     "ours": true,
+     "mozilla": false,
+     "result": "redirection-missing"
+    }
+   ],
+   "problems": 0
+  },
+  {
+   "host": "220.lv",
+   "grade": "C-",
+   "compared": 8,
+   "agree": 8,
+   "differ": [],
+   "problems": 2
+  },
+  {
+   "host": "www.ss.com",
+   "grade": "C",
+   "compared": 8,
+   "agree": 8,
+   "differ": [],
+   "problems": 2
+  },
+  {
+   "host": "www.netlify.com",
+   "grade": "F",
+   "compared": 8,
+   "agree": 8,
+   "differ": [],
+   "problems": 2
+  },
+  {
+   "host": "www.cloudflare.com",
+   "grade": "B",
+   "compared": 8,
+   "agree": 8,
+   "differ": [],
+   "problems": 0
+  },
+  {
+   "host": "wordpress.org",
+   "grade": "C",
+   "compared": 8,
+   "agree": 8,
+   "differ": [],
+   "problems": 1
+  },
+  {
+   "host": "www.bbc.co.uk",
+   "grade": "A+",
+   "compared": 8,
+   "agree": 8,
+   "differ": [],
+   "problems": 0
+  }
+ ],
+ "badssl_ok": 10,
+ "badssl_n": 10,
+ "sites": 24,
+ "compared": 192,
+ "agree": 184
+}
