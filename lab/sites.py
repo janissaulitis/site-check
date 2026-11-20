@@ -23,14 +23,15 @@ def page(title, head="", body=""):
 
 
 def site(slug, about, expect, *, https="good", http="redirect", headers=None, drop=(), cookies=(), html=None,
-         files=None, soft404=False, cors=None, spf=None, dmarc=None, txt_error=False, verified=False, wp=None, review=()):
+         files=None, soft404=False, cors=None, spf=None, dmarc=None, txt_error=False, verified=False, wp=None, review=(),
+         h2=False):
     h = dict(GOOD)
     h.update(headers or {})
     for d in drop:
         h.pop(d, None)
     return dict(slug=slug, host=f"{slug}.lab.test", about=about, expect=list(expect), https=https, http=http, headers=h,
                 cookies=list(cookies), html=html or page(slug.replace("-", " ").title()), files=files or {},
-                soft404=soft404, cors=cors, review=sorted(review), spf=GOOD_MAIL if spf is None else spf,
+                soft404=soft404, cors=cors, review=sorted(review), h2=h2, spf=GOOD_MAIL if spf is None else spf,
                 dmarc=GOOD_DMARC if dmarc is None else dmarc, txt_error=txt_error, verified=verified)
 
 
@@ -104,6 +105,16 @@ SITES = [
          [("php2shell", "High"), ("version_leak", "Low")], headers={"X-Powered-By": "PHP/8.3.20"}),
     site("php-patched", "PHP 8.4.27 shown: has the PHP2Shell fix, only the version leak is a problem",
          [("version_leak", "Low")], headers={"X-Powered-By": "PHP/8.4.27"}),
+    site("nginx-old-h2", "nginx 1.24.0 shown, HTTP/2 on: open to the Nov 2026 HTTP/2 holes",
+         [("nginx2shell", "High"), ("version_leak", "Low")], headers={"Server": "nginx/1.24.0"}, h2=True),
+    site("nginx-old-no-h2", "nginx 1.24.0 shown but HTTP/2 off: not affected by these holes, only the version leak",
+         [("version_leak", "Low")], headers={"Server": "nginx/1.24.0"}),
+    site("nginx-patched-h2", "nginx 1.30.7 (fixed stable) with HTTP/2: only the version leak",
+         [("version_leak", "Low")], headers={"Server": "nginx/1.30.7"}, h2=True),
+    site("nginx-mainline-old", "nginx 1.31.8 mainline (one before the fix) with HTTP/2",
+         [("nginx2shell", "High"), ("version_leak", "Low")], headers={"Server": "nginx/1.31.8"}, h2=True),
+    site("nginx-hidden-h2", "nginx with the version hidden and HTTP/2 on: ask to check, don't flag", [], h2=True,
+         review=["manual_nginx"]),
     site("php-hidden", "PHP site (session cookie) with the version hidden: must ask to check, not flag",
          [], cookies=["PHPSESSID=x; Secure; HttpOnly; SameSite=Lax"], review=["manual_php"]),
     site("weak-headers", "Headers present but weak: short HSTS, unsafe-inline CSP, ALLOW-FROM, unsafe-url referrer",

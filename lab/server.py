@@ -135,6 +135,8 @@ def tls_ctx(site):
         ctx.set_ciphers("DEFAULT:@SECLEVEL=0")
     else:
         ctx.minimum_version = ssl.TLSVersion.TLSv1_2
+    if site.get("h2"):
+        ctx.set_alpn_protocols(["h2", "http/1.1"])  # announces HTTP/2 (the lab still answers in HTTP/1.1)
     return ctx
 
 

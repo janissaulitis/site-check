@@ -245,7 +245,8 @@
     "not_after": "2027-02-07",
     "version": "TLSv1.3",
     "old_tls": false,
-    "reachable": true
+    "reachable": true,
+    "alpn": null
    },
    "http_chain": [
     [
@@ -327,7 +328,7 @@
     }
    }
   },
-  "scanned_at": "2026-11-19 23:13 UTC"
+  "scanned_at": "2026-11-20 15:40 UTC"
  },
  "mozilla": {
   "grade": "F",

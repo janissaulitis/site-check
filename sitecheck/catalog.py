@@ -292,6 +292,14 @@ C.update({
             "'PHP version' switch). If the host says their build has the fix backported, ask them to confirm it in writing. "
             "Until then: `session.upload_progress.enabled=0` and `display_errors=Off`.",
         retest="Hosting panel → PHP version shows a fixed release (or the host confirms the backport). Then scan again."),
+    "nginx2shell": dict(
+        area="Page", sev=H, title="nginx version open to the November 2026 HTTP/2 holes (\"nginx2shell\")",
+        why="CVE-2026-123007 and CVE-2026-123633 let an attacker run their own code on the web server over HTTP/2, without "
+            "logging in and without any flaw in the website itself. Researchers have shown working attacks.",
+        fix="Upgrade nginx to 1.30.7 (stable) or 1.31.9 (mainline) or newer, restart it, and check `nginx -v`. On a hosting "
+            "plan, ask the host to confirm the fix (Linux distributions often patch without changing the number). "
+            "If you can't upgrade today: `http2 off;` in the server blocks and remove `http2` from `listen`, then reload.",
+        retest="`nginx -v` on the server shows 1.30.7+ or 1.31.9+ (or the host confirms the fix). Then scan again."),
     "php_eol": dict(
         area="Page", sev=M, title="PHP version no longer supported",
         why="This PHP branch gets no security fixes any more, so every new hole (like PHP2Shell) stays open.",
@@ -349,6 +357,12 @@ C.update({
             "fix. Hidden is not the same as safe: attacks are automated and don't care.",
         fix="Ask the host (or look in the hosting panel) which PHP version the site runs.",
         retest="It should be 8.2.35, 8.3.36, 8.4.27, 8.5.12 or newer, or the host confirms the fix is backported."),
+    "manual_nginx": dict(
+        area="Page", sev=R, title="Runs nginx with HTTP/2: check it has the November 2026 fix",
+        why="The server is nginx and speaks HTTP/2, but hides its version, so a scan can't tell whether it has the fix for "
+            "the two critical HTTP/2 holes published on 18 November 2026.",
+        fix="Ask the host, or run `nginx -v` on the server.",
+        retest="It should be 1.30.7 (stable), 1.31.9 (mainline) or newer, or the host confirms the fix is backported."),
     "manual_old_tls": dict(
         area="HTTPS", sev=R, title="Old TLS 1.0 / 1.1: check by hand",
         why="This checker's TLS library could not offer the old versions, so it can't say whether the server accepts them.",

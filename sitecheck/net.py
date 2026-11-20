@@ -155,11 +155,12 @@ class Net:
         out = dict(ok=False, problem=None, detail="", days_left=None, not_after=None, version=None, old_tls=None,
                    reachable=False)
         ctx = ssl.create_default_context(cafile=self.ca if isinstance(self.ca, str) else None)
+        ctx.set_alpn_protocols(["h2", "http/1.1"])  # tells us whether the server speaks HTTP/2
         try:
             with socket.create_connection((host, port), timeout=self.timeout) as sock:
                 out["reachable"] = True
                 with ctx.wrap_socket(sock, server_hostname=host) as s:
-                    out.update(ok=True, version=s.version())
+                    out.update(ok=True, version=s.version(), alpn=s.selected_alpn_protocol())
                     der = s.getpeercert(binary_form=True)
         except ssl.SSLCertVerificationError as e:
             code = getattr(e, "verify_code", None)

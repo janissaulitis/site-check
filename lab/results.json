@@ -1,13 +1,13 @@
 {
- "sites": 43,
- "clean_sites": 11,
- "planted": 69,
- "caught": 69,
- "high_planted": 18,
+ "sites": 48,
+ "clean_sites": 12,
+ "planted": 75,
+ "caught": 75,
+ "high_planted": 20,
  "high_missed": [],
  "false_alarms": [],
- "mozilla_compared": 336,
- "mozilla_agree": 333,
+ "mozilla_compared": 376,
+ "mozilla_agree": 373,
  "disagreements": [
   {
    "site": "weak-headers",
@@ -47,9 +47,9 @@
   "lab name": "refused",
   "redirect to metadata": "refused"
  },
- "review_expected": 10,
- "review_found": 10,
- "review_total": 26,
+ "review_expected": 11,
+ "review_found": 11,
+ "review_total": 27,
  "checks": {
   "1 no High misses": true,
   "2 >=95% planted found": true,
@@ -2415,6 +2415,616 @@
      "Low"
     ]
    ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "nginx-old-h2",
+   "about": "nginx 1.24.0 shown, HTTP/2 on: open to the Nov 2026 HTTP/2 holes",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "nginx2shell",
+     "High"
+    ],
+    [
+     "version_leak",
+     "Low"
+    ]
+   ],
+   "caught": [
+    [
+     "nginx2shell",
+     "High"
+    ],
+    [
+     "version_leak",
+     "Low"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "nginx-old-no-h2",
+   "about": "nginx 1.24.0 shown but HTTP/2 off: not affected by these holes, only the version leak",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "version_leak",
+     "Low"
+    ]
+   ],
+   "caught": [
+    [
+     "version_leak",
+     "Low"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "nginx-patched-h2",
+   "about": "nginx 1.30.7 (fixed stable) with HTTP/2: only the version leak",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "version_leak",
+     "Low"
+    ]
+   ],
+   "caught": [
+    [
+     "version_leak",
+     "Low"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "nginx-mainline-old",
+   "about": "nginx 1.31.8 mainline (one before the fix) with HTTP/2",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "nginx2shell",
+     "High"
+    ],
+    [
+     "version_leak",
+     "Low"
+    ]
+   ],
+   "caught": [
+    [
+     "nginx2shell",
+     "High"
+    ],
+    [
+     "version_leak",
+     "Low"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "nginx-hidden-h2",
+   "about": "nginx with the version hidden and HTTP/2 on: ask to check, don't flag",
+   "verified": false,
+   "review": [
+    "manual_nginx"
+   ],
+   "review_expected": [
+    "manual_nginx"
+   ],
+   "review_missed": [],
+   "expected": [],
+   "caught": [],
    "missed": [],
    "false_alarms": [],
    "probed_paths": [],
@@ -5634,5 +6244,5 @@
    }
   }
  ],
- "run_at": "2026-11-19 23:14 UTC"
+ "run_at": "2026-11-20 15:40 UTC"
 }

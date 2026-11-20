@@ -373,6 +373,7 @@ def scan(target, net: Net, verified=False, wp_status=None):
         _cors(net, t, page, R, P, facts)
         _cookies(page, facts, on_https, R, P)
         _content(page, doc, on_https, R, P, wp_status, facts)
+        _nginx(page, (tls or {}).get("alpn") == "h2" and on_https, P, Q, facts)
 
     # ------------------------------------------------------------ email
     _email(net, domain, R, P, facts)
@@ -594,6 +595,23 @@ def _content(page, doc, on_https, R, P, wp_status, facts):
             P("wp_outdated", f"WordPress {ver}; wordpress.org lists it as outdated (still supported)")
         if m:
             P("wp_version_shown", f'<meta name="generator" content="{gen}">')
+
+
+def _nginx(page, h2, P, Q, facts):
+    """nginx2shell (CVE-2026-123007 / 123633): needs HTTP/2. Fixed in 1.30.7 stable and 1.31.9 mainline."""
+    srv = " ".join(page.all("server")).lower()
+    if "nginx" not in srv:
+        return
+    m = re.search(r"nginx/(\d+)\.(\d+)\.(\d+)", srv)
+    if m:
+        v = tuple(int(x) for x in m.groups())
+        facts["nginx"] = ".".join(map(str, v))
+        fixed = v >= (1, 32, 0) or (v[:2] == (1, 31) and v >= (1, 31, 9)) or (v[:2] == (1, 30) and v >= (1, 30, 7))
+        if v >= (1, 9, 5) and not fixed and h2:
+            P("nginx2shell", f"Server: nginx/{facts['nginx']}, HTTP/2 offered in the HTTPS handshake. Fixed in 1.30.7 / 1.31.9. "
+                             "(A Linux distribution may have backported the fix without changing the number: ask the host.)")
+    elif h2:
+        Q("manual_nginx", "Server: nginx (version hidden), HTTP/2 offered in the HTTPS handshake")
 
 
 PHP_FIXED = {(8, 2): (8, 2, 35), (8, 3): (8, 3, 36), (8, 4): (8, 4, 27), (8, 5): (8, 5, 12)}  # PHP2Shell fixes, 21 Oct 2026

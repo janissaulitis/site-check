@@ -26,7 +26,8 @@ TECH = {
     "joomla": r"joomla",
 }
 # holes Site Check already detects (CVE -> rule id)
-COVERED = {"CVE-2026-109618": "php2shell", "CVE-2026-109619": "php2shell"}
+COVERED = {"CVE-2026-109618": "php2shell", "CVE-2026-109619": "php2shell",
+           "CVE-2026-123007": "nginx2shell", "CVE-2026-123633": "nginx2shell"}
 
 
 def load_kev(path=None):
