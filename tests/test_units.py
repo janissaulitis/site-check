@@ -72,3 +72,18 @@ def test_diff():
     r = lambda *ids: dict(results=[dict(id=i, status="problem", sev="Low", evidence="x") for i in ids])
     d = diff(r("a", "b"), r("b", "c"))
     assert [x["id"] for x in d["fixed"]] == ["a"] and [x["id"] for x in d["still"]] == ["b"] and [x["id"] for x in d["new"]] == ["c"]
+
+
+def test_watch_matches_web_tech(tmp_path):
+    import json
+    import datetime as dt
+    from sitecheck import watch
+    kev = {"vulnerabilities": [
+        {"cveID": "CVE-2026-109618", "vendorProject": "PHP Group", "product": "PHP", "vulnerabilityName": "x", "dateAdded": "2026-11-15"},
+        {"cveID": "CVE-1", "vendorProject": "WordPress", "product": "Kirki plugin", "vulnerabilityName": "x", "dateAdded": "2026-11-18"},
+        {"cveID": "CVE-2", "vendorProject": "Cisco", "product": "IOS XE", "vulnerabilityName": "x", "dateAdded": "2026-11-18"},
+        {"cveID": "CVE-3", "vendorProject": "Drupal", "product": "core", "vulnerabilityName": "x", "dateAdded": "2026-01-01"}]}
+    (tmp_path / "kev.json").write_text(json.dumps(kev))
+    (tmp_path / "sites.csv").write_text("category,domain,tech\nvet,a.lv,php wordpress\nlaw,b.lv,nginx\n")
+    act = watch.run(tmp_path / "sites.csv", tmp_path / "out", 7, tmp_path / "kev.json", today=dt.date(2026, 11, 20))
+    assert [e["cve"] for e in act] == ["CVE-1"]  # PHP2Shell is covered; Cisco is not web tech; Drupal is too old

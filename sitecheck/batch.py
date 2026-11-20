@@ -56,6 +56,23 @@ def wp_status_fn(net):
     return f
 
 
+def tech_of(rep):
+    """Technologies the site visibly runs, for matching new exploited holes (see sitecheck.watch)."""
+    f = rep["facts"]
+    hdr = (f.get("page") or {}).get("headers") or {}
+    blob = " ".join(" ".join(v) for k, v in hdr.items() if k in ("server", "x-powered-by", "x-generator")).lower()
+    looks = {r["id"] for r in rep["results"] if r["status"] == "review"}
+    t = set()
+    if f.get("php") or "manual_php" in looks or "php" in blob:
+        t.add("php")
+    if (f.get("wordpress") or {}).get("is_wp"):
+        t.add("wordpress")
+    for name in ("apache", "nginx", "litespeed", "iis", "plesk", "cpanel", "drupal", "joomla", "cloudflare"):
+        if name in blob:
+            t.add(name)
+    return sorted(t)
+
+
 def scan_domain(domain, net, wp):
     """Scan the domain; if it has no working HTTPS, try www. (many small sites only have a certificate there)."""
     rep = scan(Target(domain, email_domain=domain), net, verified=False, wp_status=wp)
@@ -93,7 +110,8 @@ def run(domains_file, out_dir, delay=1.0, net=None, wp=None):
         looks = {r["id"] for r in rep["results"] if r["status"] == "review"}
         sev = Counter(r["sev"] for r in rep["results"] if r["status"] == "problem")
         unknown = {r["id"] for r in rep["results"] if r["status"] == "unknown"}
-        row = dict(category=cat, domain=dom, host=rep["host"], high=sev["High"], medium=sev["Medium"], low=sev["Low"],
+        row = dict(category=cat, domain=dom, host=rep["host"], tech=" ".join(tech_of(rep)),
+                   high=sev["High"], medium=sev["Medium"], low=sev["Low"],
                    problems=" ".join(sorted(probs)), closer_look=" ".join(sorted(looks)), not_checked=" ".join(sorted(unknown)))
         for k, (_, test) in MEASURES.items():
             if test:
