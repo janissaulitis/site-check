@@ -50,7 +50,9 @@ def web_entries(kev, since):
         if techs:
             out.append(dict(cve=v["cveID"], added=v["dateAdded"], vendor=v.get("vendorProject"), product=v.get("product"),
                             name=v.get("vulnerabilityName"), action=v.get("requiredAction"), ransomware=v.get("knownRansomwareCampaignUse"),
-                            techs=techs, covered=COVERED.get(v["cveID"])))
+                            techs=techs, covered=COVERED.get(v["cveID"]) or (
+                                "wp_insecure (only where the WordPress version is visible; hidden versions get a closer-look item)"
+                                if re.search(r"wordpress\s*core|^wordpress$", f"{v.get('product', '')}".lower()) else None)))
     return out
 
 
@@ -72,7 +74,7 @@ def run(sites_csv, out_dir, days=7, kev_path=None, today=None):
         lines += [f"## {e['cve']} · {e['vendor']} {e['product']}", "",
                   f"- {e['name']} (added {e['added']}{', used by ransomware' if e['ransomware'] == 'Known' else ''})",
                   f"- Technology: {', '.join(e['techs'])} · watched sites running it: {len(hit)} of {len(sites)}",
-                  f"- Site Check: {status}", f"- CISA says: {e['action']}", ""]
+                  f"- Site Check: {status}", f"- CISA says: {(e['action'] or '').split('. ')[0].rstrip('.')}.", ""]
     if not entries:
         lines.append("Nothing new this period that matches web technology our sites run.")
     out = Path(out_dir)
