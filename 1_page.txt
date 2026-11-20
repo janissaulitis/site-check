@@ -1,0 +1,121 @@
+Site Check
+
+A website security check that says what to fix, how, and how to retest
+Passive checks · free
+Second opinion from Mozilla HTTP Observatory
+
+How it works
+
+expand_more
+
+Check a site
+
+How well it works
+
+What it checks
+
+Check
+
+Passive checks only: nothing is logged in to, submitted or attacked. Check sites you own or have permission to check.
+
+Scan again
+
+⬇ Report for the site owner (HTML)
+
+janis-saulitis-portfolio.netlify.app · checked 2026-11-20 17:07 UTC
+
+2 things to fix soon
+
+Most urgent: No Content-Security-Policy. Each problem below has the evidence, the fix and how to retest.
+Serious
+0
+Fix soon
+2
+Improve
+2
+Closer look
+0
+Passed
+12
+HTTPS
+fine
+Headers
+4 to fix
+Cookies
+fine
+Page
+fine
+Email
+fine
+Exposed files
+owner only
+What to fix, most urgent first
+Medium
+No Content-Security-Policy
+Headers
+No Content-Security-Policy header
+Why it matters
+If an attacker manages to inject a script (through a comment, a plugin bug or a hacked ad), nothing stops the browser from running it. A policy limits where scripts may come from.
+How to fix
+Start with a report-only policy so nothing breaks, read the reports, then enforce. A safe first step that blocks plugins and framing: Content-Security-Policy: object-src 'none'; base-uri 'self'; frame-ancestors 'self'.
+Netlify: add the line under /* in a _headers file.
+Cloudflare: Rules → Transform Rules → Modify response header → Set static.
+Nginx: add_header Content-Security-Policy "object-src 'none'; base-uri 'self'; frame-ancestors 'self'" always; in the server block.
+Apache: Header always set Content-Security-Policy "object-src 'none'; base-uri 'self'; frame-ancestors 'self'" in the site config or .htaccess.
+WordPress: set it at your host or CDN, or in .htaccess on Apache hosting.
+Retest
+curl -sI https://janis-saulitis-portfolio.netlify.app | grep -i content-security-policy shows the policy. Then scan again.
+Medium
+Other sites can show this site inside a frame (clickjacking)
+Headers
+Low
+X-Content-Type-Options is not set
+Headers
+Low
+No Referrer-Policy (or a leaky one)
+Headers
+Checked and fine
+HTTPS works with a trusted certificate
+Only TLS 1.2 or newer
+http:// sends visitors to HTTPS
+HSTS is set
+No software versions in headers
+CORS does not trust other sites
+Cookies are set safely (or there are none)
+Everything on the page loads over HTTPS
+Forms send over HTTPS (or there are none)
+No outdated libraries found
+SPF record is in place
+DMARC is enforcing
+Second opinion · Mozilla
+
+Mozilla HTTP Observatory gave grade C. On the 8 tests both scanners run, they agree on 8.
+
+Test	Site Check	Mozilla
+HSTS	OK	OK
+Redirect to HTTPS	OK	OK
+Content-Security-Policy	Problem	Problem
+X-Content-Type-Options	Problem	Problem
+Clickjacking protection	Problem	Problem
+Referrer-Policy	Not set	OK
+Cookies	OK	OK
+CORS	OK	OK
+Subresource integrity	not checked	OK
+Cross-Origin-Resource-Policy	not checked	OK
+
+Open Mozilla's full report
+
+Leaked files (site owners)
+
+Checking for leaked files means asking for specific addresses, so it only runs for the site's owner. Prove janis-saulitis-portfolio.netlify.app is yours with one of these, then press Verify:
+
+A file at https://janis-saulitis-portfolio.netlify.app/.well-known/site-check.txt containing:
+
+site-check-8e4bd09c38a0cea32c04ddc8
+
+or a DNS TXT record on janis-saulitis-portfolio.netlify.app (or _site-check.janis-saulitis-portfolio.netlify.app) with the value above
+
+Verify and check for leaked files
+
+Built by Jānis Saulītis with AI · scan.py · fixed checks, no AI deciding · second opinion: Mozilla HTTP Observatory
+See more tools
