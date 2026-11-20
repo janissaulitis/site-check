@@ -26,6 +26,15 @@ with sync_playwright() as p:
     page = b.new_page(viewport={"width": 1366, "height": 900}, color_scheme="light")
     app = open_app(page)
     print("awake:", app.locator(".k-name").first.inner_text())
+    # the client dashboard (demo) is a second page of the same app: open it too, so a broken page fails the run
+    dash = b.new_page(viewport={"width": 1366, "height": 900})
+    dash.goto(URL + "dashboard", timeout=120_000)
+    d = dash.frame_locator("iframe[title='streamlitApp']")
+    d.locator(".k-hist").first.wait_for(timeout=180_000)
+    if d.locator("[data-testid=stException]").count():
+        print("FAILED: dashboard shows an error:", d.locator("[data-testid=stException]").first.inner_text()[:500]); sys.exit(1)
+    print("dashboard OK")
+    dash.close()
     if mode == "test":
         app.locator(".st-key-k_bar input").fill(SITE)
         app.locator(".st-key-k_bar input").press("Enter")
