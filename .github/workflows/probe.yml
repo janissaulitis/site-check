@@ -1,0 +1,46 @@
+name: Probe one site (debug a disagreement)
+
+on:
+  workflow_dispatch:
+    inputs:
+      host:
+        description: "Host to compare, e.g. www.example.lv"
+        required: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q -r requirements.txt
+      - name: Raw redirects and headers
+        env:
+          H: ${{ github.event.inputs.host }}
+        run: |
+          for u in "http://$H/" "https://$H/"; do echo "===== $u"; curl -sS -o /dev/null -D - -m 20 "$u" | tr -d '\r' | grep -iE '^(HTTP|location|x-content-type|content-type|strict-transport|server|x-powered)' ; done
+          echo "===== follow https://$H/"; curl -sSL -o /dev/null -D - -m 30 "https://$H/" | tr -d '\r' | grep -iE '^(HTTP|location|x-content-type|content-type)'
+      - name: Site Check vs Mozilla
+        env:
+          H: ${{ github.event.inputs.host }}
+        run: |
+          python - <<'PY'
+          import os, json
+          from sitecheck import scan as S, net as N, observatory as O
+          h = os.environ["H"]
+          rep = S.scan(S.Target(h), N.Net())
+          obs, err = O.fetch(h)
+          print("mozilla error:", err)
+          if obs:
+              for k, t in obs["tests"].items():
+                  if any(x in k for x in ("redirect", "content-type", "x-content")):
+                      print("MOZ", k, t.get("pass"), t.get("result"), t.get("scoreModifier"), json.dumps(t.get("data"))[:300] if t.get("data") else "")
+              for r in O.compare(rep, obs):
+                  if not r["agree"]: print("DIFF", json.dumps(r)[:400])
+          for r in rep["results"]:
+              if r["id"] in ("nosniff_missing", "http_no_redirect", "redirect_offhost") or "redirect" in r["id"] or "nosniff" in r["id"]:
+                  print("OURS", r["id"], r["status"], r.get("evidence"))
+          PY
