@@ -27,7 +27,8 @@ TECH = {
 }
 # holes Site Check already detects (CVE -> rule id)
 COVERED = {"CVE-2026-109618": "php2shell", "CVE-2026-109619": "php2shell",
-           "CVE-2026-123007": "nginx2shell", "CVE-2026-123633": "nginx2shell"}
+           "CVE-2026-123007": "nginx2shell", "CVE-2026-123633": "nginx2shell",
+           "CVE-2026-129289": "php_nov2026", "CVE-2026-129474": "php_nov2026", "CVE-2026-115560": "php_nov2026"}
 
 
 def load_kev(path=None):

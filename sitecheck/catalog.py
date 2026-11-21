@@ -288,8 +288,8 @@ C.update({
         why="PHP2Shell (CVE-2026-109618 / 109619) lets an attacker run their own code on the server without logging in. "
             "It works on ordinary WordPress, Drupal and Joomla sites, CISA lists it as actively exploited, and attacks "
             "started before the fix was out.",
-        fix="Ask the host to move the site to PHP 8.2.35, 8.3.36, 8.4.27 or 8.5.12 or newer (most hosting panels have a "
-            "'PHP version' switch). If the host says their build has the fix backported, ask them to confirm it in writing. "
+        fix="Ask the host to move the site to PHP 8.3.37, 8.4.28 or 8.5.13 (19 Nov 2026 releases, which also fix the "
+            "November holes; 8.2.36 works too but 8.2 ends on 31 Dec 2026). Most hosting panels have a 'PHP version' switch. If the host says their build has the fix backported, ask them to confirm it in writing. "
             "Until then: `session.upload_progress.enabled=0` and `display_errors=Off`.",
         retest="Hosting panel → PHP version shows a fixed release (or the host confirms the backport). Then scan again."),
     "nginx2shell": dict(
@@ -300,6 +300,15 @@ C.update({
             "plan, ask the host to confirm the fix (Linux distributions often patch without changing the number). "
             "If you can't upgrade today: `http2 off;` in the server blocks and remove `http2` from `listen`, then reload.",
         retest="`nginx -v` on the server shows 1.30.7+ or 1.31.9+ (or the host confirms the fix). Then scan again."),
+    "php_nov2026": dict(
+        area="Page", sev=M, title="PHP is missing the November 2026 security release",
+        why="On 19 Nov 2026 PHP fixed 18 holes, six of them critical, that can let an attacker run code on the server. "
+            "Most need an uncommon setup (FastCGI connection reuse, no production php.ini, shared session stores), and none "
+            "is known to be exploited yet, but PHP holes this year were attacked within days.",
+        fix="Ask the host to move the site to PHP 8.3.37, 8.4.28 or 8.5.13 (8.2.36 works too, but 8.2 ends on 31 Dec 2026) "
+            "and restart PHP-FPM. Until then: keep FastCGI connection reuse off (nginx `fastcgi_keep_conn off`, "
+            "Apache `enablereuse=off`) and set `session.upload_progress.enabled=0` in php.ini or the FPM pool.",
+        retest="Hosting panel → PHP version shows a 19 Nov 2026 release (or the host confirms the backport). Then scan again."),
     "php_eol": dict(
         area="Page", sev=M, title="PHP version no longer supported",
         why="This PHP branch gets no security fixes any more, so every new hole (like PHP2Shell) stays open.",
@@ -354,9 +363,10 @@ C.update({
     "manual_php": dict(
         area="Page", sev=R, title="Runs on PHP: check it is patched for PHP2Shell",
         why="The site runs on PHP but hides the version, so a scan can't tell whether it has the October 2026 PHP2Shell "
-            "fix. Hidden is not the same as safe: attacks are automated and don't care.",
+            "fix or the 19 Nov 2026 security release. Hidden is not the same as safe: attacks are automated and don't care.",
         fix="Ask the host (or look in the hosting panel) which PHP version the site runs.",
-        retest="It should be 8.2.35, 8.3.36, 8.4.27, 8.5.12 or newer, or the host confirms the fix is backported."),
+        retest="It should be 8.3.37, 8.4.28, 8.5.13 or newer (8.2.36 until 31 Dec 2026), or the host confirms the fixes "
+               "are backported. Older than 8.3.36, 8.4.27 or 8.5.12 means still open to PHP2Shell."),
     "manual_nginx": dict(
         area="Page", sev=R, title="Runs nginx with HTTP/2: check it has the November 2026 fix",
         why="The server is nginx and speaks HTTP/2, but hides its version, so a scan can't tell whether it has the fix for "

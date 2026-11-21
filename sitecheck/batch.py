@@ -37,6 +37,7 @@ MEASURES = {
     "php2shell": ("PHP version shown is open to PHP2Shell (exploited since Oct 2026)", lambda p, r: "php2shell" in p),
     "nginx2shell": ("nginx version open to the Nov 2026 HTTP/2 holes, HTTP/2 on", lambda p, r: "nginx2shell" in p),
     "nginx_hidden_h2": ("nginx with HTTP/2 on, version hidden: fix status unknown", lambda p, r: "manual_nginx" in r),
+    "php_nov2026": ("PHP version shown is missing the 19 Nov 2026 security release", lambda p, r: "php_nov2026" in p),
     "php_eol": ("PHP version no longer supported", lambda p, r: "php_eol" in p),
     "php_hidden": ("Runs PHP with the version hidden: PHP2Shell patch status unknown", lambda p, r: "manual_php" in r),
     "mixed": ("HTTPS page loads things over plain http://", lambda p, r: bool(p & {"mixed_active", "mixed_passive"})),

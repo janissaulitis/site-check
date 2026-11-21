@@ -615,6 +615,7 @@ def _nginx(page, h2, P, Q, facts):
 
 
 PHP_FIXED = {(8, 2): (8, 2, 35), (8, 3): (8, 3, 36), (8, 4): (8, 4, 27), (8, 5): (8, 5, 12)}  # PHP2Shell fixes, 21 Oct 2026
+PHP_NOV = {(8, 2): (8, 2, 36), (8, 3): (8, 3, 37), (8, 4): (8, 4, 28), (8, 5): (8, 5, 13)}  # 19 Nov 2026 security releases
 
 
 def _php(page, body, is_wp, facts):
@@ -634,6 +635,10 @@ def _php(page, body, is_wp, facts):
         elif v < fixed:
             facts["P"]("php2shell", f"X-Powered-By: PHP/{facts['php']}; fixed in {'.'.join(map(str, fixed))}. "
                                     "(A host may have backported the fix without changing the number: ask them.)")
+        elif v < PHP_NOV[v[:2]]:
+            eol = " Branch 8.2 also reaches end of life on 31 Dec 2026." if v[:2] == (8, 2) else ""
+            facts["P"]("php_nov2026", f"X-Powered-By: PHP/{facts['php']}; the 19 Nov 2026 release is "
+                                      f"{'.'.join(map(str, PHP_NOV[v[:2]]))}.{eol} (A host may have backported the fixes: ask them.)")
         return
     cookies = " ".join(page.all("set-cookie") + page.hop_cookies)
     php_signs = is_wp or "PHPSESSID" in cookies or re.search(r"\.php[\"'?]", body) or "/wp-content/" in body \

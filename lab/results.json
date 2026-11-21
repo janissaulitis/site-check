@@ -1,13 +1,13 @@
 {
- "sites": 48,
+ "sites": 50,
  "clean_sites": 12,
- "planted": 75,
- "caught": 75,
+ "planted": 79,
+ "caught": 79,
  "high_planted": 20,
  "high_missed": [],
  "false_alarms": [],
- "mozilla_compared": 376,
- "mozilla_agree": 373,
+ "mozilla_compared": 392,
+ "mozilla_agree": 389,
  "disagreements": [
   {
    "site": "weak-headers",
@@ -2398,7 +2398,7 @@
   },
   {
    "slug": "php-patched",
-   "about": "PHP 8.4.27 shown: has the PHP2Shell fix, only the version leak is a problem",
+   "about": "PHP 8.4.28 shown: has the Oct and Nov 2026 fixes, only the version leak is a problem",
    "verified": false,
    "review": [],
    "review_expected": [],
@@ -2410,6 +2410,262 @@
     ]
    ],
    "caught": [
+    [
+     "version_leak",
+     "Low"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "php-oct-only",
+   "about": "PHP 8.3.36 shown: has the PHP2Shell fix but not the 19 Nov 2026 release",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "php_nov2026",
+     "Medium"
+    ],
+    [
+     "version_leak",
+     "Low"
+    ]
+   ],
+   "caught": [
+    [
+     "php_nov2026",
+     "Medium"
+    ],
+    [
+     "version_leak",
+     "Low"
+    ]
+   ],
+   "missed": [],
+   "false_alarms": [],
+   "probed_paths": [],
+   "unknown": [],
+   "incomplete": [],
+   "mozilla": {
+    "grade": "A+",
+    "rows": [
+     {
+      "test": "strict-transport-security",
+      "name": "HSTS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "hsts-implemented-max-age-at-least-six-months",
+      "agree": true
+     },
+     {
+      "test": "redirection",
+      "name": "Redirect to HTTPS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "redirection-to-https",
+      "agree": true
+     },
+     {
+      "test": "content-security-policy",
+      "name": "Content-Security-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "csp-implemented-with-no-unsafe",
+      "agree": true
+     },
+     {
+      "test": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-content-type-options-nosniff",
+      "agree": true
+     },
+     {
+      "test": "x-frame-options",
+      "name": "Clickjacking protection",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "x-frame-options-implemented-via-csp",
+      "agree": true
+     },
+     {
+      "test": "referrer-policy",
+      "name": "Referrer-Policy",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "referrer-policy-private",
+      "agree": true
+     },
+     {
+      "test": "cookies",
+      "name": "Cookies",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cookies-not-found",
+      "agree": true
+     },
+     {
+      "test": "cross-origin-resource-sharing",
+      "name": "CORS",
+      "ours": true,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "cross-origin-resource-sharing-not-implemented",
+      "agree": true
+     },
+     {
+      "test": "subresource-integrity",
+      "name": "Subresource integrity",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "sri-not-implemented-but-no-scripts-loaded",
+      "agree": null
+     },
+     {
+      "test": "cross-origin-resource-policy",
+      "name": "Cross-Origin-Resource-Policy",
+      "ours": null,
+      "ours_note": null,
+      "mozilla": true,
+      "mozilla_result": "corp-not-implemented",
+      "agree": null
+     }
+    ]
+   }
+  },
+  {
+   "slug": "php-82-oct",
+   "about": "PHP 8.2.35 shown: missing the Nov release, and 8.2 ends on 31 Dec 2026",
+   "verified": false,
+   "review": [],
+   "review_expected": [],
+   "review_missed": [],
+   "expected": [
+    [
+     "php_nov2026",
+     "Medium"
+    ],
+    [
+     "version_leak",
+     "Low"
+    ]
+   ],
+   "caught": [
+    [
+     "php_nov2026",
+     "Medium"
+    ],
     [
      "version_leak",
      "Low"
@@ -6244,5 +6500,5 @@
    }
   }
  ],
- "run_at": "2026-11-20 15:40 UTC"
+ "run_at": "2026-11-21 10:16 UTC"
 }
